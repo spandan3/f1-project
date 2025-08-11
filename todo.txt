@@ -1,0 +1,10 @@
+Select relevent features
+
+ - drop relevance, humidty
+ - Fix driver_last_3 avg and team_last_3 finish
+ - add a column for pos gained/lost
+ - add a column to figure out total overtakes (drop overtake-idx)
+ - add a column to figure out time lost in pits (drop pit_loss)
+ - add wind if possible
+
+Add the most relevent features to predict something so that the user can see 
