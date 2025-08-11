@@ -1,27 +1,39 @@
-import fastf1, pandas as pd, os, sys
-fastf1.Cache.enable_cache("f1_cache")
+from pathlib import Path
+import fastf1, pandas as pd, sys
+
+# Project root (two levels up from backend/data/)
+BASE_DIR = Path(__file__).resolve().parents[2]
+
+# FastF1 on-disk cache at <project_root>/f1_cache
+fastf1.Cache.enable_cache(str(BASE_DIR / "f1_cache"))
+
+RAW_DIR = BASE_DIR / "data" / "raw"
+RAW_DIR.mkdir(parents=True, exist_ok=True)
 
 YEARS = [2022, 2023]   # expand later
 GPRS  = None           # None = all events in season
 
 def load_session(year, gp_name, kind):
-    s = fastf1.get_session(year, gp_name, kind); s.load()
+    s = fastf1.get_session(year, gp_name, kind)
+    s.load()
     laps = s.laps.copy()
     laps["event_year"] = year
     laps["event_name"] = s.event["EventName"]
     laps["session_type"] = kind
+
     res = s.results.copy()
     res["event_year"] = year
     res["event_name"] = s.event["EventName"]
     res["session_type"] = kind
+
     wx = s.weather_data.copy()
     wx["event_year"] = year
     wx["event_name"] = s.event["EventName"]
     wx["session_type"] = kind
+
     return laps, res, wx
 
 def main():
-    os.makedirs("data/raw", exist_ok=True)
     laps_all, res_all, wx_all = [], [], []
     for y in YEARS:
         cal = fastf1.get_event_schedule(y)
@@ -34,9 +46,15 @@ def main():
                     print(f"OK: {y} {gp} {kind}")
                 except Exception as e:
                     print(f"Skip: {y} {gp} {kind} -> {e}", file=sys.stderr)
-    pd.concat(laps_all).to_parquet("data/raw/laps.parquet")
-    pd.concat(res_all).to_parquet("data/raw/results.parquet")
-    pd.concat(wx_all).to_parquet("data/raw/weather.parquet")
+
+    if laps_all:
+        pd.concat(laps_all, ignore_index=True).to_parquet(RAW_DIR / "laps.parquet", index=False)
+    if res_all:
+        pd.concat(res_all, ignore_index=True).to_parquet(RAW_DIR / "results.parquet", index=False)
+    if wx_all:
+        pd.concat(wx_all, ignore_index=True).to_parquet(RAW_DIR / "weather.parquet", index=False)
+
+    print(f"✅ Saved to {RAW_DIR}")
 
 if __name__ == "__main__":
     main()
