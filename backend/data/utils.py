@@ -1,67 +1,60 @@
-# backend/data/utils.py
-import os, math, numpy as np, pandas as pd
-import fastf1
+from pathlib import Path
+import fastf1, pandas as pd, sys
 
-CACHE_DIR = os.getenv("F1_CACHE_DIR", "./f1_cache")
+# Project root (two levels up from backend/data/)
+BASE_DIR = Path(__file__).resolve().parents[2]
 
-def enable_cache(cache_dir: str = CACHE_DIR):
-    os.makedirs(cache_dir, exist_ok=True)
-    fastf1.Cache.enable_cache(cache_dir)
+# FastF1 on-disk cache at <project_root>/f1_cache
+fastf1.Cache.enable_cache(str(BASE_DIR / "f1_cache"))
 
-def ensure_dirs(*paths):
-    for p in paths:
-        os.makedirs(p, exist_ok=True)
+RAW_DIR = BASE_DIR / "data" / "raw"
+RAW_DIR.mkdir(parents=True, exist_ok=True)
 
-def safe_int(x):
-    try:
-        v = int(x)
-        return v if not math.isnan(v) else np.nan
-    except Exception:
-        try:
-            return int(float(x))
-        except Exception:
-            return np.nan
+YEARS = [2022, 2023]   # expand later
+GPRS  = None           # None = all events in season
 
-def get_event_list(year: int):
-    ev = fastf1.get_event_schedule(year, include_testing=False).sort_values("EventDate")
-    out = []
-    for _, r in ev.iterrows():
-        rnd = safe_int(r.get("RoundNumber"))
-        if not np.isnan(rnd):
-            out.append((int(rnd), r.get("EventName"), pd.to_datetime(r.get("EventDate"))))
-    return out
+def load_session(year, gp_name, kind):
+    s = fastf1.get_session(year, gp_name, kind)
+    s.load()
+    laps = s.laps.copy()
+    laps["event_year"] = year
+    laps["event_name"] = s.event["EventName"]
+    laps["session_type"] = kind
 
-def load_session_results(year: int, round_number: int, kind: str):
-    """Return (session, results_df) for 'Race' or 'Qualifying'. Results df has Abbreviation, Team, Position, GridPosition, Points, Status."""
-    try:
-        ses = fastf1.get_session(year, round_number, kind)
-        ses.load()
-        df = ses.results.copy()
-        if df is None or df.empty:
-            return None, None
-        if "Team" not in df.columns and "TeamName" in df.columns:
-            df = df.rename(columns={"TeamName": "Team"})
-        for c in ["Abbreviation", "DriverNumber", "Team"]:
-            if c not in df.columns:
-                df[c] = np.nan
-        if kind == "Race":
-            for c in ["Position", "GridPosition", "Points", "Status"]:
-                if c not in df.columns:
-                    df[c] = np.nan
-        if kind == "Qualifying" and "Position" not in df.columns:
-            df["Position"] = np.nan
-        return ses, df
-    except Exception:
-        return None, None
+    res = s.results.copy()
+    res["event_year"] = year
+    res["event_name"] = s.event["EventName"]
+    res["session_type"] = kind
 
-def session_weather_snapshot(session):
-    """Simple pre‑race weather snapshot from first row."""
-    try:
-        w = session.weather_data
-        if w is None or w.empty:
-            return {}
-        row = w.iloc[0]
-        fields = ["AirTemp","TrackTemp","Humidity","WindSpeed","WindDirection","Pressure","Rainfall"]
-        return {f: float(row.get(f, np.nan)) for f in fields}
-    except Exception:
-        return {}
+    wx = s.weather_data.copy()
+    wx["event_year"] = year
+    wx["event_name"] = s.event["EventName"]
+    wx["session_type"] = kind
+
+    return laps, res, wx
+
+def main():
+    laps_all, res_all, wx_all = [], [], []
+    for y in YEARS:
+        cal = fastf1.get_event_schedule(y)
+        events = cal["EventName"].tolist() if GPRS is None else GPRS
+        for gp in events:
+            for kind in ["Q", "R"]:
+                try:
+                    laps, res, wx = load_session(y, gp, kind)
+                    laps_all.append(laps); res_all.append(res); wx_all.append(wx)
+                    print(f"OK: {y} {gp} {kind}")
+                except Exception as e:
+                    print(f"Skip: {y} {gp} {kind} -> {e}", file=sys.stderr)
+
+    if laps_all:
+        pd.concat(laps_all, ignore_index=True).to_parquet(RAW_DIR / "laps.parquet", index=False)
+    if res_all:
+        pd.concat(res_all, ignore_index=True).to_parquet(RAW_DIR / "results.parquet", index=False)
+    if wx_all:
+        pd.concat(wx_all, ignore_index=True).to_parquet(RAW_DIR / "weather.parquet", index=False)
+
+    print(f"✅ Saved to {RAW_DIR}")
+
+if __name__ == "__main__":
+    main()

@@ -1,107 +1,79 @@
-# backend/data/build_dataset.py
-import numpy as np, pandas as pd
-from collections import defaultdict, deque
-from .utils import enable_cache, get_event_list, load_session_results, session_weather_snapshot, safe_int
+import pandas as pd, numpy as np
+from pathlib import Path
 
-MIN_FINISH_POS, MAX_FINISH_POS = 1, 20
+# Base project directory (two levels up from backend/data/)
+BASE_DIR = Path(__file__).resolve().parents[2]
+RAW_LAPS = BASE_DIR / "data" / "raw" / "laps.parquet"
+RAW_RES = BASE_DIR / "data" / "raw" / "results.parquet"
+FE_DIR = BASE_DIR / "data" / "fe"
+FE_DIR.mkdir(parents=True, exist_ok=True)
 
-def _rolling_mean(hist, k):
-    if not hist:
-        return 0.0
-    return float(np.mean(hist[-k:])) if len(hist) >= k else float(np.mean(hist))
+def make_pre_race_table() -> pd.DataFrame:
+    laps = pd.read_parquet(RAW_LAPS)
+    res  = pd.read_parquet(RAW_RES)
 
-def build_dataset(seasons, cache_dir="./f1_cache"):
-    """Return a feature dataframe: one row per driver per race with pre‑race features + targets."""
-    enable_cache(cache_dir)
-    rows = []
+    # Use race results (R) as labels; use qualifying (Q) for grid/quali gap
+    quali = res[res["session_type"]=="Q"][["DriverNumber","Driver","TeamName","event_name","event_year","Position","Q1","Q2","Q3"]]
+    quali = quali.rename(columns={"Position":"grid_pos"})
+    race  = res[res["session_type"]=="R"][["DriverNumber","Driver","TeamName","event_name","event_year","Position","Status"]]
+    race = race.rename(columns={"Position":"finish_pos"})
 
-    for year in seasons:
-        events = get_event_list(year)
-        driver_hist = defaultdict(lambda: deque(maxlen=5))
-        team_hist   = defaultdict(lambda: deque(maxlen=5))
+    # Quali best time per driver (as seconds)
+    def to_s(x):
+        if pd.isna(x): return np.nan
+        m, s = str(x).split(":")
+        return int(m)*60+float(s)
 
-        for rnd, ename, _ in events:
-            q_ses, q_df = load_session_results(year, rnd, "Qualifying")
-            quali_pos = {}
-            if q_df is not None:
-                for _, r in q_df.iterrows():
-                    d = r.get("Abbreviation")
-                    qp = safe_int(r.get("Position"))
-                    if isinstance(d, str) and not np.isnan(qp):
-                        quali_pos[d] = int(qp)
+    quali["best_q"] = quali[["Q3","Q2","Q1"]].apply(
+        lambda r: pd.Series([to_s(r["Q3"]), to_s(r["Q2"]), to_s(r["Q1"])]).min(), axis=1
+    )
 
-            r_ses, r_df = load_session_results(year, rnd, "Race")
-            if r_ses is None or r_df is None or r_df.empty:
-                continue
+    # Gap to pole
+    pole = quali.groupby(["event_year","event_name"])["best_q"].transform("min")
+    quali["quali_gap_s"] = quali["best_q"] - pole
 
-            weather = session_weather_snapshot(r_ses)
+    # Join race labels
+    df = pd.merge(
+        race,
+        quali[["DriverNumber","event_year","event_name","grid_pos","quali_gap_s"]],
+        on=["DriverNumber","event_year","event_name"], how="left"
+    )
 
-            for _, rr in r_df.iterrows():
-                drv = rr.get("Abbreviation")
-                team = rr.get("Team") if isinstance(rr.get("Team"), str) else "Unknown"
-                finish_pos = safe_int(rr.get("Position"))
-                grid = safe_int(rr.get("GridPosition"))
-                pts = rr.get("Points")
-                pts = float(pts) if pts is not None and not pd.isna(pts) else 0.0
+    # Driver & constructor rolling form (last 3 races prior to this event)
+    df = df.sort_values(["Driver","event_year","event_name"])
+    grp = df.groupby("Driver", group_keys=False)
+    df["driver_last3_avg_finish"] = grp["finish_pos"].apply(lambda s: s.shift().rolling(3, min_periods=1).mean())
+    df["driver_last3_dnfs"] = grp.apply(
+        lambda g: (g["finish_pos"].isna() | (g["finish_pos"]<=0)).shift().rolling(3, min_periods=1).sum()
+    ).reset_index(level=0, drop=True)
 
-                if not isinstance(drv, str) or drv.strip() == "":
-                    continue
-                if not (MIN_FINISH_POS <= (finish_pos or 999) <= MAX_FINISH_POS):
-                    continue
+    g2 = df.groupby("TeamName", group_keys=False)
+    df["team_last3_avg_finish"] = g2["finish_pos"].apply(lambda s: s.shift().rolling(3, min_periods=1).mean())
 
-                drv_hist = list(driver_hist[drv])
-                team_hist_list = list(team_hist[team])
+    # Simple track descriptors (placeholders)
+    df["track_overtake_idx"] = 0.5
+    df["pit_loss_s"] = 22.0
 
-                row = {
-                    "season": year,
-                    "round": rnd,
-                    "track_event_name": ename,
-                    "driver": drv,
-                    "team": team,
-                    "quali_pos": quali_pos.get(drv, np.nan),
-                    "grid_pos": grid if not np.isnan(grid if grid is not None else np.nan) else np.nan,
-                    "driver_form_3": _rolling_mean(drv_hist, 3),
-                    "driver_form_5": _rolling_mean(drv_hist, 5),
-                    "team_form_3": _rolling_mean(team_hist_list, 3),
-                    "team_form_5": _rolling_mean(team_hist_list, 5),
-                    "air_temp": weather.get("AirTemp", np.nan),
-                    "track_temp": weather.get("TrackTemp", np.nan),
-                    "humidity": weather.get("Humidity", np.nan),
-                    "wind_speed": weather.get("WindSpeed", np.nan),
-                    "wind_dir": weather.get("WindDirection", np.nan),
-                    "pressure": weather.get("Pressure", np.nan),
-                    "rainfall": weather.get("Rainfall", np.nan),
-                    "finish_pos": finish_pos,
-                    "scored_points": 1 if pts > 0 else 0,
-                }
-                row["relevance"] = 21 - row["finish_pos"]
-                rows.append(row)
+    # Weather (placeholder)
+    df["is_wet_flag"] = 0
 
-            # update rolling history AFTER we created rows
-            for _, rr in r_df.iterrows():
-                d = rr.get("Abbreviation")
-                t = rr.get("Team") if isinstance(rr.get("Team"), str) else None
-                p = rr.get("Points"); p = float(p) if p is not None and not pd.isna(p) else 0.0
-                if isinstance(d, str): driver_hist[d].append(p)
-                if isinstance(t, str): team_hist[t].append(p)
+    # Label + relevance (for LambdaMART)
+    df["relevance"] = (df["finish_pos"]==1)*3 + (df["finish_pos"]==2)*2 + (df["finish_pos"]==3)*1
 
-    df = pd.DataFrame(rows)
+    # Group id per race
+    df["race_id"] = df["event_year"].astype(str) + "_" + df["event_name"].astype(str)
 
-    # light cleanup / encodings
-    df["quali_pos"] = df["quali_pos"].fillna(30)
-    df["grid_pos"]  = df["grid_pos"].fillna(30)
-    df["track_id"]  = df["track_event_name"].astype("category").cat.codes
-    df["team_id"]   = df["team"].astype("category").cat.codes
-    df["driver_id"] = df["driver"].astype("category").cat.codes
-    return df
+    # Minimal features
+    features = ["grid_pos","quali_gap_s","driver_last3_avg_finish","team_last3_avg_finish",
+                "track_overtake_idx","pit_loss_s","is_wet_flag"]
+    keep = ["race_id","Driver","DriverNumber","TeamName","finish_pos","relevance"] + features
+    out = df[keep].dropna(subset=["grid_pos","quali_gap_s"], how="any")
 
-def build_single_race_features(season: int, rnd: int, cache_dir="./f1_cache"):
-    """Features for one race, to use after quali for predictions."""
-    enable_cache(cache_dir)
-    # Reuse logic by building minimal dataset only for that race, without targets
-    from .utils import get_event_list
-    events = {r for r,_,_ in get_event_list(season)}
-    assert rnd in events, f"Round {rnd} not found for {season}"
-    # A quick hack: build_dataset for season up to this round, then filter
-    df = build_dataset([season], cache_dir)
-    return df[(df["season"]==season) & (df["round"]==rnd)].drop(columns=["finish_pos","scored_points","relevance"])
+    # Save to data/fe/
+    out_path = FE_DIR / "standings_train.parquet"
+    out.to_parquet(out_path, index=False)
+    print(f"✅ Saved features to {out_path}")
+    return out
+
+if __name__=="__main__":
+    make_pre_race_table()
