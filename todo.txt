@@ -1,17 +1,17 @@
 Select relevent features
 
- - Fix driver_last_3 avg and team_last_3 finish
- - add a column for pos gained/lost
- - add a column to figure out total overtakes 
- - add a column to figure out time lost in pits  - What exactly does pitloss mean?
- - add wind if possible
+ - drop relevance, humidty (done)
+ - Fix driver_last_3 avg and team_last_3 finish (done)
+ - add a column for pos gained/lost (added pos_changed)
+ - add a column to figure out total overtakes (done)
+ - add a column to figure out time lost in pits (done)
+ - add wind if possible (done)
 
 Add the most relevent features to predict something so that the user can see 
 
 Things to add 
- - Tyre compound used
- - Grid vs quali diff (in case of penalties, can be neg or pos)
- - Team pit stop average time
+ - Tyre compound used (done)
+ - Grid vs quali diff (done)
 
  For rain:
  If you just want "wet race" vs "dry race", then is_wet_flag is the cleaner choice.

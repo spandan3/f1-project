@@ -313,6 +313,36 @@ def make_pre_race_table() -> pd.DataFrame:
         df = df.merge(pit_tot, on=["event_year","event_name","DriverNumber"], how="left")
     else:
         df["pit_loss_total_s"] = np.nan
+    
+
+    # --- STARTING TYRE COMPOUND ---
+    if RAW_LAPS.exists():
+        laps_all = pd.read_parquet(RAW_LAPS)
+
+        for c in ["event_year","event_name","Driver","LapNumber","Compound"]:
+            if c not in laps_all.columns:
+                laps_all[c] = np.nan
+
+        # pick the first lap with a known compound for each driver in the race (usually Lap 1)
+        tyre_first = (laps_all.sort_values(["event_year","event_name","Driver","LapNumber"])
+                            .dropna(subset=["Compound"])
+                            .groupby(["event_year","event_name","Driver"], as_index=False)
+                            .first()[["event_year","event_name","Driver","Compound"]]
+                            .rename(columns={"Compound":"start_compound"}))
+
+        df = df.merge(tyre_first, on=["event_year","event_name","Driver"], how="left")
+
+        # normalize to title case (Soft/Medium/Hard/Inter/Wet)
+        df["start_compound"] = df["start_compound"].astype(str).str.strip().str.title()
+
+        # optional: one-hots for LightGBM (or keep string and mark categorical in training)
+        for comp in ["Soft","Medium","Hard","Inter","Wet"]:
+            col = f"start_{comp.lower()}"
+            df[col] = (df["start_compound"] == comp).astype("Int64")
+    else:
+        df["start_compound"] = np.nan
+        for comp in ["Soft","Medium","Hard","Inter","Wet"]:
+            df[f"start_{comp.lower()}"] = np.nan
 
     # Targets
     df["scored_points"] = (pd.to_numeric(df["finish_pos"], errors="coerce") <= 10).astype(int)
@@ -332,7 +362,8 @@ def make_pre_race_table() -> pd.DataFrame:
         "pos_change","total_overtakes",
         "pit_loss_total_s",
         "mean_air_temp","mean_track_temp","mean_wind_speed","mean_wind_dir","wind_sin","wind_cos",
-        "is_wet_flag"
+        "is_wet_flag", "start_compound", "start_soft", "start_medium", "start_hard",
+        "start_inter", "start_wet"
     ]
     feature_cols = [c for c in feature_cols if c in df.columns]
 
