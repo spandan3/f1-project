@@ -254,6 +254,47 @@ def make_pre_race_table() -> pd.DataFrame:
                    .reset_index())
     df = df.merge(overtakes, on="race_id", how="left")
 
+    if "total_overtakes" in df.columns:
+        df = df.rename(columns={"total_overtakes": "race_total_overtakes"})
+
+# 2) Add per-driver overtakes from lap-by-lap position deltas
+    if RAW_LAPS.exists():
+        laps = pd.read_parquet(RAW_LAPS)
+
+    # ensure required cols exist
+        for c in ["event_year","event_name","Driver","LapNumber","Position"]:
+            if c not in laps.columns:
+                # can't compute without these; fall back to NaN columns
+                df["driver_overtakes"] = np.nan
+                df["driver_times_overtaken"] = np.nan
+                df["driver_net_passes"] = np.nan
+                break
+            else:
+                laps = laps.sort_values(["event_year","event_name","Driver","LapNumber"])
+                # negative diff => moved up (overtook someone)
+                pos_diff = laps.groupby(["event_year","event_name","Driver"])["Position"].diff()
+
+                drv_ov = (pos_diff < 0).groupby(
+                    [laps["event_year"], laps["event_name"], laps["Driver"]]
+                ).sum().reset_index(name="driver_overtakes")
+
+                drv_be = (pos_diff > 0).groupby(
+                    [laps["event_year"], laps["event_name"], laps["Driver"]]
+                ).sum().reset_index(name="driver_times_overtaken")
+
+                drv = drv_ov.merge(drv_be, on=["event_year","event_name","Driver"], how="outer").fillna(0)
+                drv["driver_net_passes"] = drv["driver_overtakes"] - drv["driver_times_overtaken"]
+
+                dup_cols = [c for c in ["driver_overtakes", "driver_times_overtaken", "driver_net_passes"] if c in df.columns]
+                if dup_cols:
+                    df = df.drop(columns=dup_cols)
+
+                df = df.merge(drv, on=["event_year","event_name","Driver"], how="left")
+        else:
+            df["driver_overtakes"] = np.nan
+            df["driver_times_overtaken"] = np.nan
+            df["driver_net_passes"] = np.nan
+
     # ---- Weather merge (incl wind + wet); then drop mean_humidity as requested ----
     wx_feat = _load_weather_features()
     if wx_feat is not None:
