@@ -1,0 +1,21 @@
+race_id,event_year,event_name,Driver,TeamName,grid_pos,finish_pos,pred_rank,score
+2025_Australian Grand Prix,2025,Australian Grand Prix,NOR,McLaren,1.0,1.0,1.0,4.672825185361677
+2025_Australian Grand Prix,2025,Australian Grand Prix,VER,Red Bull Racing,3.0,2.0,2.0,2.021189779573795
+2025_Australian Grand Prix,2025,Australian Grand Prix,RUS,Mercedes,4.0,3.0,3.0,0.3939977561023806
+2025_Australian Grand Prix,2025,Australian Grand Prix,ANT,Mercedes,16.0,4.0,4.0,-1.061556560704423
+2025_Australian Grand Prix,2025,Australian Grand Prix,ALB,Williams,6.0,5.0,5.0,-1.2959198257427176
+2025_Australian Grand Prix,2025,Australian Grand Prix,STR,Aston Martin,13.0,6.0,6.0,-2.0659797147442536
+2025_Australian Grand Prix,2025,Australian Grand Prix,HUL,Kick Sauber,17.0,7.0,7.0,-2.461851963083773
+2025_Australian Grand Prix,2025,Australian Grand Prix,BEA,Haas F1 Team,20.0,14.0,8.0,-2.882606848743368
+2025_Australian Grand Prix,2025,Australian Grand Prix,LEC,Ferrari,7.0,8.0,9.0,-3.0684399123937762
+2025_Australian Grand Prix,2025,Australian Grand Prix,PIA,McLaren,2.0,9.0,10.0,-3.139151676660441
+2025_Australian Grand Prix,2025,Australian Grand Prix,HAM,Ferrari,8.0,10.0,11.0,-3.784467831840544
+2025_Australian Grand Prix,2025,Australian Grand Prix,GAS,Alpine,9.0,11.0,12.0,-4.1658198669352915
+2025_Australian Grand Prix,2025,Australian Grand Prix,TSU,Racing Bulls,5.0,12.0,13.0,-4.500791006359698
+2025_Australian Grand Prix,2025,Australian Grand Prix,OCO,Haas F1 Team,19.0,13.0,14.0,-4.5948819216467385
+2025_Australian Grand Prix,2025,Australian Grand Prix,LAW,Red Bull Racing,18.0,15.0,15.0,-4.75824195017914
+2025_Australian Grand Prix,2025,Australian Grand Prix,ALO,Aston Martin,12.0,17.0,16.0,-4.810269033606121
+2025_Australian Grand Prix,2025,Australian Grand Prix,SAI,Williams,10.0,18.0,17.0,-4.816249363403158
+2025_Australian Grand Prix,2025,Australian Grand Prix,DOO,Alpine,14.0,19.0,18.0,-4.841422872880708
+2025_Australian Grand Prix,2025,Australian Grand Prix,HAD,Racing Bulls,11.0,20.0,19.0,-4.845612520014282
+2025_Australian Grand Prix,2025,Australian Grand Prix,BOR,Kick Sauber,15.0,16.0,20.0,-4.867880450155696

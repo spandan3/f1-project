@@ -1,0 +1,2 @@
+race_id,event_year,event_name,ndcg@3,ndcg@10,top3_hit,spearman_rho
+2025_Australian Grand Prix,2025,Australian Grand Prix,0.0,0.0,1.0,0.9533834586462857

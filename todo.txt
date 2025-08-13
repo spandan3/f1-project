@@ -17,3 +17,9 @@ Things to add
  If you just want "wet race" vs "dry race", then is_wet_flag is the cleaner choice.
 If you want to model in-race condition changes (e.g., pace drop mid-race), Rainfall as a time series is better.
 
+Run to predict a single race:
+python backend/ml/predict.py --race-id "2025_Australian Grand Prix"
+
+
+To predict all races:
+python backend/ml/predict.py 

@@ -359,7 +359,7 @@ def make_pre_race_table() -> pd.DataFrame:
     feature_cols = [
         "grid_pos","quali_gap_s","grid_quali_diff",
         "driver_last3_avg_finish","team_last3_avg_finish",
-        "pos_change","total_overtakes",
+        "pos_change","race_total_overtakes",
         "pit_loss_total_s",
         "mean_air_temp","mean_track_temp","mean_wind_speed","mean_wind_dir","wind_sin","wind_cos",
         "is_wet_flag", "start_compound", "start_soft", "start_medium", "start_hard",

@@ -1,0 +1,13 @@
+race_id,event_year,event_name,ndcg@3,ndcg@10,top3_hit,spearman_rho
+2025_Australian Grand Prix,2025,Australian Grand Prix,0.0,0.0,1.0,0.9533834586462857
+2025_Austrian Grand Prix,2025,Austrian Grand Prix,0.0,0.0,1.0,0.984962406014696
+2025_Bahrain Grand Prix,2025,Bahrain Grand Prix,0.0,0.0,1.0,0.9924812030071746
+2025_Belgian Grand Prix,2025,Belgian Grand Prix,0.0,0.0,1.0,0.9909774436086787
+2025_British Grand Prix,2025,British Grand Prix,0.0,0.0,0.6666666666666666,0.9924812030071744
+2025_Canadian Grand Prix,2025,Canadian Grand Prix,0.0,0.0,1.0,0.95187969924779
+2025_Chinese Grand Prix,2025,Chinese Grand Prix,0.0,0.0,1.0,0.9804511278192086
+2025_Japanese Grand Prix,2025,Japanese Grand Prix,0.0,0.0,1.0,0.9984962406011574
+2025_Miami Grand Prix,2025,Miami Grand Prix,0.0,0.0,1.0,0.9849624060146956
+2025_Monaco Grand Prix,2025,Monaco Grand Prix,0.0,0.0,1.0,0.989473684210183
+2025_Saudi Arabian Grand Prix,2025,Saudi Arabian Grand Prix,0.0,0.0,0.6666666666666666,0.9699248120297387
+2025_Spanish Grand Prix,2025,Spanish Grand Prix,0.0,0.0,1.0,0.9824561403505184

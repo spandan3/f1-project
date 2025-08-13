@@ -10,10 +10,10 @@ fastf1.Cache.enable_cache(str(BASE_DIR / "f1_cache"))
 RAW_DIR = BASE_DIR / "data" / "raw"
 RAW_DIR.mkdir(parents=True, exist_ok=True)
 
-YEARS = [2023]   # expand later
-GPRS  = ["Bahrain", "Monaco"]           # None = all events in season
+YEARS = [2025, 2024, 2023, 2022, 2021, 2020] 
+GPRS  = None # None = all events in season
 
-def load_session(year, gp_name, kind):
+def load_session(year, gp_name, kind):  
     s = fastf1.get_session(year, gp_name, kind)
     s.load()
     laps = s.laps.copy()

@@ -1,0 +1,240 @@
+race_id,event_year,event_name,Driver,TeamName,grid_pos,finish_pos,pred_rank,score
+2025_Australian Grand Prix,2025,Australian Grand Prix,NOR,McLaren,1.0,1.0,1.0,4.672825185361677
+2025_Australian Grand Prix,2025,Australian Grand Prix,VER,Red Bull Racing,3.0,2.0,2.0,2.021189779573795
+2025_Australian Grand Prix,2025,Australian Grand Prix,RUS,Mercedes,4.0,3.0,3.0,0.3939977561023806
+2025_Australian Grand Prix,2025,Australian Grand Prix,ANT,Mercedes,16.0,4.0,4.0,-1.061556560704423
+2025_Australian Grand Prix,2025,Australian Grand Prix,ALB,Williams,6.0,5.0,5.0,-1.2959198257427176
+2025_Australian Grand Prix,2025,Australian Grand Prix,STR,Aston Martin,13.0,6.0,6.0,-2.0659797147442536
+2025_Australian Grand Prix,2025,Australian Grand Prix,HUL,Kick Sauber,17.0,7.0,7.0,-2.461851963083773
+2025_Australian Grand Prix,2025,Australian Grand Prix,BEA,Haas F1 Team,20.0,14.0,8.0,-2.882606848743368
+2025_Australian Grand Prix,2025,Australian Grand Prix,LEC,Ferrari,7.0,8.0,9.0,-3.0684399123937762
+2025_Australian Grand Prix,2025,Australian Grand Prix,PIA,McLaren,2.0,9.0,10.0,-3.139151676660441
+2025_Australian Grand Prix,2025,Australian Grand Prix,HAM,Ferrari,8.0,10.0,11.0,-3.784467831840544
+2025_Australian Grand Prix,2025,Australian Grand Prix,GAS,Alpine,9.0,11.0,12.0,-4.1658198669352915
+2025_Australian Grand Prix,2025,Australian Grand Prix,TSU,Racing Bulls,5.0,12.0,13.0,-4.500791006359698
+2025_Australian Grand Prix,2025,Australian Grand Prix,OCO,Haas F1 Team,19.0,13.0,14.0,-4.5948819216467385
+2025_Australian Grand Prix,2025,Australian Grand Prix,LAW,Red Bull Racing,18.0,15.0,15.0,-4.75824195017914
+2025_Australian Grand Prix,2025,Australian Grand Prix,ALO,Aston Martin,12.0,17.0,16.0,-4.810269033606121
+2025_Australian Grand Prix,2025,Australian Grand Prix,SAI,Williams,10.0,18.0,17.0,-4.816249363403158
+2025_Australian Grand Prix,2025,Australian Grand Prix,DOO,Alpine,14.0,19.0,18.0,-4.841422872880708
+2025_Australian Grand Prix,2025,Australian Grand Prix,HAD,Racing Bulls,11.0,20.0,19.0,-4.845612520014282
+2025_Australian Grand Prix,2025,Australian Grand Prix,BOR,Kick Sauber,15.0,16.0,20.0,-4.867880450155696
+2025_Austrian Grand Prix,2025,Austrian Grand Prix,NOR,McLaren,1.0,1.0,1.0,4.801288087296134
+2025_Austrian Grand Prix,2025,Austrian Grand Prix,PIA,McLaren,3.0,2.0,2.0,1.7427165245733143
+2025_Austrian Grand Prix,2025,Austrian Grand Prix,LEC,Ferrari,2.0,3.0,3.0,0.22605904025182738
+2025_Austrian Grand Prix,2025,Austrian Grand Prix,HAM,Ferrari,4.0,4.0,4.0,-0.41981800067534614
+2025_Austrian Grand Prix,2025,Austrian Grand Prix,RUS,Mercedes,5.0,5.0,5.0,-1.4462949001649368
+2025_Austrian Grand Prix,2025,Austrian Grand Prix,LAW,Racing Bulls,6.0,6.0,6.0,-2.3415068416733478
+2025_Austrian Grand Prix,2025,Austrian Grand Prix,ALO,Aston Martin,11.0,7.0,7.0,-2.6765048932287545
+2025_Austrian Grand Prix,2025,Austrian Grand Prix,HUL,Kick Sauber,20.0,9.0,8.0,-3.124306591857972
+2025_Austrian Grand Prix,2025,Austrian Grand Prix,BOR,Kick Sauber,8.0,8.0,9.0,-3.1622660326389997
+2025_Austrian Grand Prix,2025,Austrian Grand Prix,OCO,Haas F1 Team,17.0,10.0,10.0,-3.7624148463890803
+2025_Austrian Grand Prix,2025,Austrian Grand Prix,BEA,Haas F1 Team,15.0,11.0,11.0,-4.1090351674783
+2025_Austrian Grand Prix,2025,Austrian Grand Prix,HAD,Racing Bulls,13.0,12.0,12.0,-4.549141924562136
+2025_Austrian Grand Prix,2025,Austrian Grand Prix,GAS,Alpine,10.0,13.0,13.0,-4.615208914149086
+2025_Austrian Grand Prix,2025,Austrian Grand Prix,STR,Aston Martin,16.0,14.0,14.0,-4.701361286143635
+2025_Austrian Grand Prix,2025,Austrian Grand Prix,VER,Red Bull Racing,7.0,18.0,15.0,-4.717080362699337
+2025_Austrian Grand Prix,2025,Austrian Grand Prix,ALB,Williams,12.0,17.0,16.0,-4.780362049112315
+2025_Austrian Grand Prix,2025,Austrian Grand Prix,COL,Alpine,14.0,15.0,17.0,-4.800071191456696
+2025_Austrian Grand Prix,2025,Austrian Grand Prix,TSU,Red Bull Racing,18.0,16.0,18.0,-4.806339012511536
+2025_Austrian Grand Prix,2025,Austrian Grand Prix,ANT,Mercedes,9.0,19.0,19.0,-4.8562382784906175
+2025_Austrian Grand Prix,2025,Austrian Grand Prix,SAI,Williams,19.0,20.0,20.0,-4.902192910195376
+2025_Bahrain Grand Prix,2025,Bahrain Grand Prix,PIA,McLaren,1.0,1.0,1.0,4.690333855838005
+2025_Bahrain Grand Prix,2025,Bahrain Grand Prix,NOR,McLaren,6.0,3.0,2.0,2.6243771630697967
+2025_Bahrain Grand Prix,2025,Bahrain Grand Prix,RUS,Mercedes,3.0,2.0,3.0,2.49881951661275
+2025_Bahrain Grand Prix,2025,Bahrain Grand Prix,LEC,Ferrari,2.0,4.0,4.0,-0.5684083785622368
+2025_Bahrain Grand Prix,2025,Bahrain Grand Prix,HAM,Ferrari,9.0,5.0,5.0,-1.5397093145225238
+2025_Bahrain Grand Prix,2025,Bahrain Grand Prix,VER,Red Bull Racing,7.0,6.0,6.0,-1.991396431672771
+2025_Bahrain Grand Prix,2025,Bahrain Grand Prix,GAS,Alpine,4.0,7.0,7.0,-2.377361650763436
+2025_Bahrain Grand Prix,2025,Bahrain Grand Prix,OCO,Haas F1 Team,14.0,8.0,8.0,-3.228560136837777
+2025_Bahrain Grand Prix,2025,Bahrain Grand Prix,TSU,Red Bull Racing,10.0,9.0,9.0,-3.5394087173165043
+2025_Bahrain Grand Prix,2025,Bahrain Grand Prix,BEA,Haas F1 Team,20.0,10.0,10.0,-3.5444846385860322
+2025_Bahrain Grand Prix,2025,Bahrain Grand Prix,ANT,Mercedes,5.0,11.0,11.0,-4.09086317005977
+2025_Bahrain Grand Prix,2025,Bahrain Grand Prix,ALB,Williams,15.0,12.0,12.0,-4.357913690146471
+2025_Bahrain Grand Prix,2025,Bahrain Grand Prix,HAD,Racing Bulls,12.0,13.0,13.0,-4.578168219305825
+2025_Bahrain Grand Prix,2025,Bahrain Grand Prix,DOO,Alpine,11.0,14.0,14.0,-4.728558051880199
+2025_Bahrain Grand Prix,2025,Bahrain Grand Prix,ALO,Aston Martin,13.0,15.0,15.0,-4.843426429810591
+2025_Bahrain Grand Prix,2025,Bahrain Grand Prix,LAW,Racing Bulls,17.0,16.0,16.0,-4.845073653303976
+2025_Bahrain Grand Prix,2025,Bahrain Grand Prix,STR,Aston Martin,19.0,17.0,17.0,-4.847832053070364
+2025_Bahrain Grand Prix,2025,Bahrain Grand Prix,HUL,Kick Sauber,16.0,20.0,18.0,-4.877256738436348
+2025_Bahrain Grand Prix,2025,Bahrain Grand Prix,SAI,Williams,8.0,19.0,19.0,-4.881292987045348
+2025_Bahrain Grand Prix,2025,Bahrain Grand Prix,BOR,Kick Sauber,18.0,18.0,20.0,-4.905247162670406
+2025_Belgian Grand Prix,2025,Belgian Grand Prix,PIA,McLaren,2.0,1.0,1.0,3.7118105063201803
+2025_Belgian Grand Prix,2025,Belgian Grand Prix,NOR,McLaren,1.0,2.0,2.0,1.3941054380671953
+2025_Belgian Grand Prix,2025,Belgian Grand Prix,LEC,Ferrari,3.0,3.0,3.0,0.4779898346927392
+2025_Belgian Grand Prix,2025,Belgian Grand Prix,VER,Red Bull Racing,4.0,4.0,4.0,-0.2744588966616219
+2025_Belgian Grand Prix,2025,Belgian Grand Prix,RUS,Mercedes,6.0,5.0,5.0,-1.321771928045027
+2025_Belgian Grand Prix,2025,Belgian Grand Prix,ALB,Williams,5.0,6.0,6.0,-1.9877250768456265
+2025_Belgian Grand Prix,2025,Belgian Grand Prix,HAM,Ferrari,18.0,7.0,7.0,-2.841064414605622
+2025_Belgian Grand Prix,2025,Belgian Grand Prix,LAW,Racing Bulls,9.0,8.0,8.0,-2.9997016344336807
+2025_Belgian Grand Prix,2025,Belgian Grand Prix,BOR,Kick Sauber,10.0,9.0,9.0,-3.4154926102065204
+2025_Belgian Grand Prix,2025,Belgian Grand Prix,GAS,Alpine,13.0,10.0,10.0,-3.7888844937642867
+2025_Belgian Grand Prix,2025,Belgian Grand Prix,BEA,Haas F1 Team,12.0,11.0,11.0,-4.2462010476689604
+2025_Belgian Grand Prix,2025,Belgian Grand Prix,HUL,Kick Sauber,14.0,12.0,12.0,-4.356764592381397
+2025_Belgian Grand Prix,2025,Belgian Grand Prix,TSU,Red Bull Racing,7.0,13.0,13.0,-4.6484601204871545
+2025_Belgian Grand Prix,2025,Belgian Grand Prix,OCO,Haas F1 Team,11.0,15.0,14.0,-4.730769987067558
+2025_Belgian Grand Prix,2025,Belgian Grand Prix,STR,Aston Martin,16.0,14.0,15.0,-4.796652697704097
+2025_Belgian Grand Prix,2025,Belgian Grand Prix,SAI,Williams,17.0,18.0,16.0,-4.800016495565278
+2025_Belgian Grand Prix,2025,Belgian Grand Prix,ALO,Aston Martin,20.0,17.0,17.0,-4.853096392503443
+2025_Belgian Grand Prix,2025,Belgian Grand Prix,ANT,Mercedes,19.0,16.0,18.0,-4.853096392503443
+2025_Belgian Grand Prix,2025,Belgian Grand Prix,HAD,Racing Bulls,8.0,20.0,19.0,-4.887311393899991
+2025_Belgian Grand Prix,2025,Belgian Grand Prix,COL,Alpine,15.0,19.0,20.0,-4.887380473259598
+2025_British Grand Prix,2025,British Grand Prix,NOR,McLaren,3.0,1.0,1.0,3.841321493082291
+2025_British Grand Prix,2025,British Grand Prix,PIA,McLaren,2.0,2.0,2.0,2.0764845672718093
+2025_British Grand Prix,2025,British Grand Prix,HAM,Ferrari,5.0,4.0,3.0,-0.4093704259648558
+2025_British Grand Prix,2025,British Grand Prix,HUL,Kick Sauber,19.0,3.0,4.0,-1.8815334059911217
+2025_British Grand Prix,2025,British Grand Prix,GAS,Alpine,8.0,6.0,5.0,-1.8862418105360894
+2025_British Grand Prix,2025,British Grand Prix,VER,Red Bull Racing,1.0,5.0,6.0,-1.9894611800271607
+2025_British Grand Prix,2025,British Grand Prix,STR,Aston Martin,17.0,7.0,7.0,-2.5377298007557045
+2025_British Grand Prix,2025,British Grand Prix,ALB,Williams,13.0,8.0,8.0,-3.0578270229259363
+2025_British Grand Prix,2025,British Grand Prix,ALO,Aston Martin,7.0,9.0,9.0,-3.2764706012965714
+2025_British Grand Prix,2025,British Grand Prix,RUS,Mercedes,4.0,10.0,10.0,-3.6409323855477864
+2025_British Grand Prix,2025,British Grand Prix,BEA,Haas F1 Team,18.0,11.0,11.0,-3.8368892991505534
+2025_British Grand Prix,2025,British Grand Prix,SAI,Williams,9.0,12.0,12.0,-4.447693107496468
+2025_British Grand Prix,2025,British Grand Prix,LEC,Ferrari,6.0,14.0,13.0,-4.548177535733742
+2025_British Grand Prix,2025,British Grand Prix,OCO,Haas F1 Team,14.0,13.0,14.0,-4.644887581456677
+2025_British Grand Prix,2025,British Grand Prix,ANT,Mercedes,10.0,16.0,15.0,-4.648733064581686
+2025_British Grand Prix,2025,British Grand Prix,TSU,Red Bull Racing,11.0,15.0,16.0,-4.7564322501142575
+2025_British Grand Prix,2025,British Grand Prix,HAD,Racing Bulls,12.0,17.0,17.0,-4.797781537349159
+2025_British Grand Prix,2025,British Grand Prix,LAW,Racing Bulls,15.0,19.0,18.0,-4.867922102612682
+2025_British Grand Prix,2025,British Grand Prix,BOR,Kick Sauber,16.0,18.0,19.0,-4.898009097147933
+2025_British Grand Prix,2025,British Grand Prix,COL,Alpine,20.0,20.0,20.0,-4.90394557297384
+2025_Canadian Grand Prix,2025,Canadian Grand Prix,RUS,Mercedes,1.0,1.0,1.0,4.667466912093825
+2025_Canadian Grand Prix,2025,Canadian Grand Prix,VER,Red Bull Racing,2.0,2.0,2.0,1.6392959736616715
+2025_Canadian Grand Prix,2025,Canadian Grand Prix,ANT,Mercedes,4.0,3.0,3.0,0.335605219416472
+2025_Canadian Grand Prix,2025,Canadian Grand Prix,PIA,McLaren,3.0,4.0,4.0,-0.34218224189682783
+2025_Canadian Grand Prix,2025,Canadian Grand Prix,LEC,Ferrari,8.0,5.0,5.0,-1.551991186282798
+2025_Canadian Grand Prix,2025,Canadian Grand Prix,HAM,Ferrari,5.0,6.0,6.0,-2.0702846776627775
+2025_Canadian Grand Prix,2025,Canadian Grand Prix,ALO,Aston Martin,6.0,7.0,7.0,-2.595323146194236
+2025_Canadian Grand Prix,2025,Canadian Grand Prix,HUL,Kick Sauber,11.0,8.0,8.0,-3.1165204441089585
+2025_Canadian Grand Prix,2025,Canadian Grand Prix,OCO,Haas F1 Team,14.0,9.0,9.0,-3.4799745912831357
+2025_Canadian Grand Prix,2025,Canadian Grand Prix,TSU,Red Bull Racing,18.0,12.0,10.0,-3.788937932241262
+2025_Canadian Grand Prix,2025,Canadian Grand Prix,SAI,Williams,16.0,10.0,11.0,-3.928310039389941
+2025_Canadian Grand Prix,2025,Canadian Grand Prix,NOR,McLaren,7.0,18.0,12.0,-4.05274421626721
+2025_Canadian Grand Prix,2025,Canadian Grand Prix,BEA,Haas F1 Team,13.0,11.0,13.0,-4.240165125379181
+2025_Canadian Grand Prix,2025,Canadian Grand Prix,GAS,Alpine,20.0,15.0,14.0,-4.621251158482901
+2025_Canadian Grand Prix,2025,Canadian Grand Prix,COL,Alpine,10.0,13.0,15.0,-4.625843661016351
+2025_Canadian Grand Prix,2025,Canadian Grand Prix,BOR,Kick Sauber,15.0,14.0,16.0,-4.723919946072881
+2025_Canadian Grand Prix,2025,Canadian Grand Prix,HAD,Racing Bulls,12.0,16.0,17.0,-4.765799396940227
+2025_Canadian Grand Prix,2025,Canadian Grand Prix,ALB,Williams,9.0,20.0,18.0,-4.873428298947719
+2025_Canadian Grand Prix,2025,Canadian Grand Prix,STR,Aston Martin,17.0,17.0,19.0,-4.89801251247817
+2025_Canadian Grand Prix,2025,Canadian Grand Prix,LAW,Racing Bulls,19.0,19.0,20.0,-4.90173872957118
+2025_Chinese Grand Prix,2025,Chinese Grand Prix,PIA,McLaren,1.0,1.0,1.0,4.630330896100538
+2025_Chinese Grand Prix,2025,Chinese Grand Prix,NOR,McLaren,3.0,2.0,2.0,2.5788565850879577
+2025_Chinese Grand Prix,2025,Chinese Grand Prix,RUS,Mercedes,2.0,3.0,3.0,0.300618315166586
+2025_Chinese Grand Prix,2025,Chinese Grand Prix,VER,Red Bull Racing,4.0,4.0,4.0,-0.5175073567494796
+2025_Chinese Grand Prix,2025,Chinese Grand Prix,OCO,Haas F1 Team,11.0,5.0,5.0,-1.5114228949471935
+2025_Chinese Grand Prix,2025,Chinese Grand Prix,ANT,Mercedes,8.0,6.0,6.0,-1.9578884477971052
+2025_Chinese Grand Prix,2025,Chinese Grand Prix,ALB,Williams,10.0,7.0,7.0,-2.745173687470588
+2025_Chinese Grand Prix,2025,Chinese Grand Prix,BEA,Haas F1 Team,17.0,8.0,8.0,-2.9517479758913985
+2025_Chinese Grand Prix,2025,Chinese Grand Prix,STR,Aston Martin,14.0,9.0,9.0,-3.3901167178087865
+2025_Chinese Grand Prix,2025,Chinese Grand Prix,SAI,Williams,15.0,10.0,10.0,-3.5986417367640007
+2025_Chinese Grand Prix,2025,Chinese Grand Prix,HAD,Racing Bulls,7.0,11.0,11.0,-3.7303902421968016
+2025_Chinese Grand Prix,2025,Chinese Grand Prix,LAW,Red Bull Racing,20.0,12.0,12.0,-4.361853293050102
+2025_Chinese Grand Prix,2025,Chinese Grand Prix,DOO,Alpine,18.0,13.0,13.0,-4.507173493310361
+2025_Chinese Grand Prix,2025,Chinese Grand Prix,BOR,Kick Sauber,19.0,14.0,14.0,-4.624595904037753
+2025_Chinese Grand Prix,2025,Chinese Grand Prix,HAM,Ferrari,5.0,19.0,15.0,-4.690961958709396
+2025_Chinese Grand Prix,2025,Chinese Grand Prix,HUL,Kick Sauber,12.0,15.0,16.0,-4.720728136687829
+2025_Chinese Grand Prix,2025,Chinese Grand Prix,LEC,Ferrari,6.0,18.0,17.0,-4.7311326950143515
+2025_Chinese Grand Prix,2025,Chinese Grand Prix,TSU,Racing Bulls,9.0,16.0,18.0,-4.794970018892375
+2025_Chinese Grand Prix,2025,Chinese Grand Prix,ALO,Aston Martin,13.0,17.0,19.0,-4.80847622045622
+2025_Chinese Grand Prix,2025,Chinese Grand Prix,GAS,Alpine,16.0,20.0,20.0,-4.8351054863830925
+2025_Japanese Grand Prix,2025,Japanese Grand Prix,VER,Red Bull Racing,1.0,1.0,1.0,4.717894746281893
+2025_Japanese Grand Prix,2025,Japanese Grand Prix,NOR,McLaren,2.0,2.0,2.0,1.711186834835657
+2025_Japanese Grand Prix,2025,Japanese Grand Prix,PIA,McLaren,3.0,3.0,3.0,0.7993621911369567
+2025_Japanese Grand Prix,2025,Japanese Grand Prix,LEC,Ferrari,4.0,4.0,4.0,-0.373362667620729
+2025_Japanese Grand Prix,2025,Japanese Grand Prix,RUS,Mercedes,5.0,5.0,5.0,-0.9654126301465383
+2025_Japanese Grand Prix,2025,Japanese Grand Prix,ANT,Mercedes,6.0,6.0,6.0,-2.1369502294769758
+2025_Japanese Grand Prix,2025,Japanese Grand Prix,HAM,Ferrari,8.0,7.0,7.0,-2.4791022350987624
+2025_Japanese Grand Prix,2025,Japanese Grand Prix,HAD,Racing Bulls,7.0,8.0,8.0,-3.0396702829263993
+2025_Japanese Grand Prix,2025,Japanese Grand Prix,ALB,Williams,9.0,9.0,9.0,-3.465917992210299
+2025_Japanese Grand Prix,2025,Japanese Grand Prix,BEA,Haas F1 Team,10.0,10.0,10.0,-3.806322624576906
+2025_Japanese Grand Prix,2025,Japanese Grand Prix,ALO,Aston Martin,12.0,11.0,11.0,-4.256952490119702
+2025_Japanese Grand Prix,2025,Japanese Grand Prix,TSU,Red Bull Racing,14.0,12.0,12.0,-4.364537916231841
+2025_Japanese Grand Prix,2025,Japanese Grand Prix,GAS,Alpine,11.0,13.0,13.0,-4.5431231611598255
+2025_Japanese Grand Prix,2025,Japanese Grand Prix,SAI,Williams,15.0,14.0,14.0,-4.781481773152271
+2025_Japanese Grand Prix,2025,Japanese Grand Prix,DOO,Alpine,19.0,15.0,15.0,-4.794475427067857
+2025_Japanese Grand Prix,2025,Japanese Grand Prix,LAW,Racing Bulls,13.0,17.0,16.0,-4.802297655421834
+2025_Japanese Grand Prix,2025,Japanese Grand Prix,HUL,Kick Sauber,16.0,16.0,17.0,-4.8665782759291885
+2025_Japanese Grand Prix,2025,Japanese Grand Prix,OCO,Haas F1 Team,18.0,18.0,18.0,-4.88605016216932
+2025_Japanese Grand Prix,2025,Japanese Grand Prix,BOR,Kick Sauber,17.0,19.0,19.0,-4.896626132388713
+2025_Japanese Grand Prix,2025,Japanese Grand Prix,STR,Aston Martin,20.0,20.0,20.0,-4.904107548271879
+2025_Miami Grand Prix,2025,Miami Grand Prix,PIA,McLaren,4.0,1.0,1.0,2.674337037181819
+2025_Miami Grand Prix,2025,Miami Grand Prix,NOR,McLaren,2.0,2.0,2.0,1.7609701171199243
+2025_Miami Grand Prix,2025,Miami Grand Prix,RUS,Mercedes,5.0,3.0,3.0,0.9776771367118324
+2025_Miami Grand Prix,2025,Miami Grand Prix,VER,Red Bull Racing,1.0,4.0,4.0,-0.4262427957849231
+2025_Miami Grand Prix,2025,Miami Grand Prix,ALB,Williams,7.0,5.0,5.0,-1.4817001866883326
+2025_Miami Grand Prix,2025,Miami Grand Prix,ANT,Mercedes,3.0,6.0,6.0,-1.9667244247602333
+2025_Miami Grand Prix,2025,Miami Grand Prix,LEC,Ferrari,8.0,7.0,7.0,-2.5191067732670795
+2025_Miami Grand Prix,2025,Miami Grand Prix,SAI,Williams,6.0,9.0,8.0,-3.063927259723185
+2025_Miami Grand Prix,2025,Miami Grand Prix,HAM,Ferrari,12.0,8.0,9.0,-3.1646703252909023
+2025_Miami Grand Prix,2025,Miami Grand Prix,TSU,Red Bull Racing,10.0,10.0,10.0,-3.817225647426188
+2025_Miami Grand Prix,2025,Miami Grand Prix,HAD,Racing Bulls,11.0,11.0,11.0,-4.203642615240799
+2025_Miami Grand Prix,2025,Miami Grand Prix,GAS,Alpine,20.0,13.0,12.0,-4.360100653655521
+2025_Miami Grand Prix,2025,Miami Grand Prix,OCO,Haas F1 Team,9.0,12.0,13.0,-4.478261566348202
+2025_Miami Grand Prix,2025,Miami Grand Prix,HUL,Kick Sauber,16.0,14.0,14.0,-4.696798062035598
+2025_Miami Grand Prix,2025,Miami Grand Prix,ALO,Aston Martin,17.0,15.0,15.0,-4.749814109215528
+2025_Miami Grand Prix,2025,Miami Grand Prix,LAW,Racing Bulls,15.0,17.0,16.0,-4.793397353491743
+2025_Miami Grand Prix,2025,Miami Grand Prix,BOR,Kick Sauber,13.0,18.0,17.0,-4.825592037148417
+2025_Miami Grand Prix,2025,Miami Grand Prix,DOO,Alpine,14.0,20.0,18.0,-4.834279122524307
+2025_Miami Grand Prix,2025,Miami Grand Prix,STR,Aston Martin,18.0,16.0,19.0,-4.881866928405532
+2025_Miami Grand Prix,2025,Miami Grand Prix,BEA,Haas F1 Team,19.0,19.0,20.0,-4.889936702222152
+2025_Monaco Grand Prix,2025,Monaco Grand Prix,NOR,McLaren,1.0,1.0,1.0,4.6520489063162636
+2025_Monaco Grand Prix,2025,Monaco Grand Prix,LEC,Ferrari,2.0,2.0,2.0,1.6920138267344702
+2025_Monaco Grand Prix,2025,Monaco Grand Prix,PIA,McLaren,3.0,3.0,3.0,0.4982304697008467
+2025_Monaco Grand Prix,2025,Monaco Grand Prix,VER,Red Bull Racing,4.0,4.0,4.0,-0.5919723865104906
+2025_Monaco Grand Prix,2025,Monaco Grand Prix,HAM,Ferrari,7.0,5.0,5.0,-1.1464489971991882
+2025_Monaco Grand Prix,2025,Monaco Grand Prix,HAD,Racing Bulls,5.0,6.0,6.0,-1.9792758937738635
+2025_Monaco Grand Prix,2025,Monaco Grand Prix,OCO,Haas F1 Team,8.0,7.0,7.0,-2.5684872875975424
+2025_Monaco Grand Prix,2025,Monaco Grand Prix,LAW,Racing Bulls,9.0,8.0,8.0,-2.9593896197582223
+2025_Monaco Grand Prix,2025,Monaco Grand Prix,ALB,Williams,10.0,9.0,9.0,-3.3741723825226964
+2025_Monaco Grand Prix,2025,Monaco Grand Prix,SAI,Williams,11.0,10.0,10.0,-4.027321950020424
+2025_Monaco Grand Prix,2025,Monaco Grand Prix,RUS,Mercedes,14.0,11.0,11.0,-4.190366472541351
+2025_Monaco Grand Prix,2025,Monaco Grand Prix,BEA,Haas F1 Team,20.0,12.0,12.0,-4.350306111023674
+2025_Monaco Grand Prix,2025,Monaco Grand Prix,COL,Alpine,18.0,13.0,13.0,-4.556768084175568
+2025_Monaco Grand Prix,2025,Monaco Grand Prix,BOR,Kick Sauber,16.0,14.0,14.0,-4.78603250673537
+2025_Monaco Grand Prix,2025,Monaco Grand Prix,STR,Aston Martin,19.0,15.0,15.0,-4.811531508497629
+2025_Monaco Grand Prix,2025,Monaco Grand Prix,TSU,Red Bull Racing,12.0,17.0,16.0,-4.827422131285243
+2025_Monaco Grand Prix,2025,Monaco Grand Prix,ALO,Aston Martin,6.0,19.0,17.0,-4.84395390574234
+2025_Monaco Grand Prix,2025,Monaco Grand Prix,ANT,Mercedes,15.0,18.0,18.0,-4.870344352393832
+2025_Monaco Grand Prix,2025,Monaco Grand Prix,HUL,Kick Sauber,13.0,16.0,19.0,-4.871265639993836
+2025_Monaco Grand Prix,2025,Monaco Grand Prix,GAS,Alpine,17.0,20.0,20.0,-4.9014604696136646
+2025_Saudi Arabian Grand Prix,2025,Saudi Arabian Grand Prix,PIA,McLaren,2.0,1.0,1.0,3.9876195729550172
+2025_Saudi Arabian Grand Prix,2025,Saudi Arabian Grand Prix,NOR,McLaren,10.0,4.0,2.0,2.081636365032232
+2025_Saudi Arabian Grand Prix,2025,Saudi Arabian Grand Prix,VER,Red Bull Racing,1.0,2.0,3.0,1.4975451365019337
+2025_Saudi Arabian Grand Prix,2025,Saudi Arabian Grand Prix,LEC,Ferrari,4.0,3.0,4.0,0.3501236723376435
+2025_Saudi Arabian Grand Prix,2025,Saudi Arabian Grand Prix,RUS,Mercedes,3.0,5.0,5.0,-1.1604206072356338
+2025_Saudi Arabian Grand Prix,2025,Saudi Arabian Grand Prix,ANT,Mercedes,5.0,6.0,6.0,-1.9690889659279214
+2025_Saudi Arabian Grand Prix,2025,Saudi Arabian Grand Prix,HAM,Ferrari,7.0,7.0,7.0,-2.6602092766927057
+2025_Saudi Arabian Grand Prix,2025,Saudi Arabian Grand Prix,SAI,Williams,6.0,8.0,8.0,-2.9437076366538344
+2025_Saudi Arabian Grand Prix,2025,Saudi Arabian Grand Prix,ALB,Williams,11.0,9.0,9.0,-3.4531304241899474
+2025_Saudi Arabian Grand Prix,2025,Saudi Arabian Grand Prix,HAD,Racing Bulls,14.0,10.0,10.0,-3.632358165533281
+2025_Saudi Arabian Grand Prix,2025,Saudi Arabian Grand Prix,ALO,Aston Martin,13.0,11.0,11.0,-4.171824123495399
+2025_Saudi Arabian Grand Prix,2025,Saudi Arabian Grand Prix,LAW,Racing Bulls,12.0,12.0,12.0,-4.411891263322338
+2025_Saudi Arabian Grand Prix,2025,Saudi Arabian Grand Prix,BEA,Haas F1 Team,15.0,13.0,13.0,-4.546019428628212
+2025_Saudi Arabian Grand Prix,2025,Saudi Arabian Grand Prix,OCO,Haas F1 Team,19.0,14.0,14.0,-4.631167104787508
+2025_Saudi Arabian Grand Prix,2025,Saudi Arabian Grand Prix,HUL,Kick Sauber,18.0,15.0,15.0,-4.799482838699913
+2025_Saudi Arabian Grand Prix,2025,Saudi Arabian Grand Prix,GAS,Alpine,9.0,20.0,16.0,-4.850216205184319
+2025_Saudi Arabian Grand Prix,2025,Saudi Arabian Grand Prix,TSU,Red Bull Racing,8.0,19.0,17.0,-4.874978026632729
+2025_Saudi Arabian Grand Prix,2025,Saudi Arabian Grand Prix,STR,Aston Martin,16.0,16.0,18.0,-4.88514021573429
+2025_Saudi Arabian Grand Prix,2025,Saudi Arabian Grand Prix,BOR,Kick Sauber,20.0,18.0,19.0,-4.887463399554248
+2025_Saudi Arabian Grand Prix,2025,Saudi Arabian Grand Prix,DOO,Alpine,17.0,17.0,20.0,-4.896935673485376
+2025_Spanish Grand Prix,2025,Spanish Grand Prix,PIA,McLaren,1.0,1.0,1.0,4.738343032664144
+2025_Spanish Grand Prix,2025,Spanish Grand Prix,NOR,McLaren,2.0,2.0,2.0,1.9292834809083566
+2025_Spanish Grand Prix,2025,Spanish Grand Prix,LEC,Ferrari,7.0,3.0,3.0,0.20978182542803833
+2025_Spanish Grand Prix,2025,Spanish Grand Prix,RUS,Mercedes,4.0,4.0,4.0,-0.6012112255286591
+2025_Spanish Grand Prix,2025,Spanish Grand Prix,HUL,Kick Sauber,15.0,5.0,5.0,-1.672420312187776
+2025_Spanish Grand Prix,2025,Spanish Grand Prix,HAM,Ferrari,5.0,6.0,6.0,-2.0126925356569436
+2025_Spanish Grand Prix,2025,Spanish Grand Prix,HAD,Racing Bulls,9.0,7.0,7.0,-2.5752118781108115
+2025_Spanish Grand Prix,2025,Spanish Grand Prix,GAS,Alpine,8.0,8.0,8.0,-3.173130066971727
+2025_Spanish Grand Prix,2025,Spanish Grand Prix,ALO,Aston Martin,10.0,9.0,9.0,-3.505711757031438
+2025_Spanish Grand Prix,2025,Spanish Grand Prix,VER,Red Bull Racing,3.0,10.0,10.0,-3.61512049836359
+2025_Spanish Grand Prix,2025,Spanish Grand Prix,LAW,Racing Bulls,13.0,11.0,11.0,-4.188053345957025
+2025_Spanish Grand Prix,2025,Spanish Grand Prix,BOR,Kick Sauber,12.0,12.0,12.0,-4.417245908793172
+2025_Spanish Grand Prix,2025,Spanish Grand Prix,TSU,Red Bull Racing,19.0,13.0,13.0,-4.5631291844482975
+2025_Spanish Grand Prix,2025,Spanish Grand Prix,SAI,Williams,17.0,14.0,14.0,-4.6856234906397045
+2025_Spanish Grand Prix,2025,Spanish Grand Prix,COL,Alpine,18.0,15.0,15.0,-4.8001895562335095
+2025_Spanish Grand Prix,2025,Spanish Grand Prix,ALB,Williams,11.0,19.0,16.0,-4.841733624870119
+2025_Spanish Grand Prix,2025,Spanish Grand Prix,ANT,Mercedes,6.0,18.0,17.0,-4.863008770573748
+2025_Spanish Grand Prix,2025,Spanish Grand Prix,BEA,Haas F1 Team,14.0,17.0,18.0,-4.8873268457735755
+2025_Spanish Grand Prix,2025,Spanish Grand Prix,OCO,Haas F1 Team,16.0,16.0,19.0,-4.891858245896644
