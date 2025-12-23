@@ -136,3 +136,25 @@ def predict(
         "predictions": predictions,
         "metrics": metrics,  # may be null if finish_pos not available
     }
+
+# --- DATA REFRESH ENDPOINT (manual trigger) ---
+
+from backend.ml.build_2025_dataset import fetch_2025_raw
+
+
+@app.post("/refresh")
+def refresh(year: int = 2025):
+    """
+    Rebuild / update feature dataset for a season.
+    This will:
+    - pull latest FastF1 data
+    - update quali / sprint features if available
+    - ensure all races exist in the FE parquet
+    """
+    fetch_2025_raw()
+    return {
+        "ok": True,
+        "message": "Feature dataset refreshed",
+        "year": year,
+    }
+

@@ -88,36 +88,25 @@ def _compute_pit_losses_sum(laps: pd.DataFrame, n_baseline: int = 3) -> pd.DataF
 # ---------- RAW: fetch 2025 only ----------
 def fetch_2025_raw():
     years = [2025]
-    gprs = [
-    "Melbourne",
-    "Suzuka",
-    "Shanghai",
-    "Bahrain",
-    "Jeddah",
-    "Miami",
-    "Monaco",
-    "Spain",
-    "Austria",
-    "Belgium",
-    "Silverstone",
-    "Canada"
-    ]
+    gprs = None
 
     laps_all, res_all, wx_all = [], [], []
     for y in years:
         cal = fastf1.get_event_schedule(y)
         events = cal["EventName"].tolist() if gprs is None else gprs
+        print("Schedule rows:", len(cal))
+        print("Events count:", len(events))
+        print("First 5:", events[:5])
+        print("Last 5:", events[-5:])
+        print("Has Abu Dhabi?:", any("Abu Dhabi" in e for e in events))
         for gp in events:
             for kind in ["Q", "R"]:
                 try:
-                    s = fastf1.get_session(y, gp, kind); s.load()
-                    laps = s.laps.copy();      laps["event_year"]=y; laps["event_name"]=s.event["EventName"]; laps["session_type"]=kind
-                    res  = s.results.copy();   res["event_year"]=y;  res["event_name"]=s.event["EventName"];  res["session_type"]=kind
-                    wx   = s.weather_data.copy(); wx["event_year"]=y; wx["event_name"]=s.event["EventName"]; wx["session_type"]=kind
-                    laps_all.append(laps); res_all.append(res); wx_all.append(wx)
-                    print(f"OK: {y} {gp} {kind}")
+                    s = fastf1.get_session(y, gp, kind)
+                    s.load()
                 except Exception as e:
-                    print(f"Skip: {y} {gp} {kind} -> {e}", file=sys.stderr)
+                    print(f"[SKIP] {y} {gp} {kind}: {e}")
+                    continue
 
     if laps_all:
         pd.concat(laps_all, ignore_index=True).to_parquet(RAW_DIR / "laps_2025.parquet", index=False)
