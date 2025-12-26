@@ -1,3 +1,71 @@
-.venv
-.ipynb_checkpoints
-f1_cache
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+.venv/
+venv/
+ENV/
+env/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+
+# Project Specific - Large Data Files
+f1_cache/
+data/raw/*.parquet
+data/processed/*.parquet
+data/fe/*.parquet
+data/fe/**/*.parquet
+data/preds/*.csv
+
+# FastF1 cache database
+*.sqlite
+
+# Keep directory structure
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+!data/fe/.gitkeep
+!data/preds/.gitkeep
+
+# Models (large binary files)
+models/*.txt
+models/*.joblib
+!models/.gitkeep
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
