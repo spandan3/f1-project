@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>F1 Race Predictions</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="app-header">
+    <div class="app-header-inner">
+      <h1>F1 Race Predictions</h1>
+      <p>Query your FastAPI backend and inspect race predictions + metrics.</p>
+    </div>
+  </header>
+
+  <main class="app-main">
+    <!-- Form card -->
+    <section class="card">
+      <h2>Run a Prediction</h2>
+      <form id="predict-form" class="form-grid">
+        <div class="form-field">
+          <label for="year">Season year <span class="required">*</span></label>
+          <input
+            type="number"
+            id="year"
+            min="1950"
+            max="2100"
+            placeholder="e.g. 2025"
+            required
+          />
+        </div>
+
+        <div class="form-field">
+          <label for="race-id">Race ID (optional)</label>
+          <input
+            type="text"
+            id="race-id"
+            placeholder="e.g. 2025_Bahrain Grand Prix"
+          />
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" id="submit-btn">Predict</button>
+          <button type="button" id="reset-btn" class="ghost">Clear</button>
+        </div>
+      </form>
+      <p class="hint small">
+        The form calls <code>GET /predict</code> on your FastAPI backend.
+      </p>
+    </section>
+
+    <!-- Results + metrics -->
+    <section class="layout-two-col">
+      <!-- Predictions -->
+      <section class="card">
+        <div class="card-header-row">
+          <h2>Predicted Results</h2>
+          <span id="race-meta" class="meta"></span>
+        </div>
+
+        <p id="predictions-empty" class="empty-state">
+          Run a prediction to see results.
+        </p>
+
+        <div class="table-wrapper" id="predictions-wrapper" hidden>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Pred Pos</th>
+                <th>Driver</th>
+                <th>Team</th>
+                <th>Grid</th>
+                <th>Score</th>
+                <th>Race</th>
+                <th>Year</th>
+              </tr>
+            </thead>
+            <tbody id="predictions-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Metrics -->
+      <section class="card">
+        <h2>Metrics</h2>
+        <p id="metrics-empty" class="empty-state">
+          Metrics (NDCG, Top-3 hit, Spearman, RMSE if present) will appear here.
+        </p>
+
+        <div id="metrics-wrapper" hidden>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Metric</th>
+                <th>Value</th>
+              </tr>
+            </thead>
+            <tbody id="metrics-body"></tbody>
+          </table>
+        </div>
+      </section>
+    </section>
+
+    <!-- Status / loading -->
+    <section class="card subtle">
+      <div id="status-bar" class="status-bar" hidden></div>
+      <div id="loading" class="loading" hidden>
+        <div class="spinner"></div>
+        <span>Running prediction...</span>
+      </div>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <p>
+      Backend: <code>http://127.0.0.1:8000/predict</code> &middot;
+      Frontend served from <code>frontend/</code>.
+    </p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -385,7 +385,10 @@ def make_pre_race_table() -> pd.DataFrame:
     out.to_parquet(out_path, index=False)
     print(f"✅ Saved processed → {proc_path}")
     print(f"✅ Saved features  → {out_path} (rows={len(out)}, cols={out.shape[1]})")
+    print(res[st_col].value_counts(dropna=False))
     return out
 
 if __name__ == "__main__":
     make_pre_race_table()
+
+
