@@ -43,6 +43,8 @@ data/preds/*.csv
 
 # FastF1 cache database
 *.sqlite
+# Allow chatbot database (tracked with Git LFS)
+!data/f1_chatbot.db
 
 # Keep directory structure
 !data/raw/.gitkeep

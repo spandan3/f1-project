@@ -75,10 +75,13 @@ def call_ollama(prompt: str, model: str = OLLAMA_MODEL) -> str:
     """
     try:
         # Call ollama via command line
+        # Use UTF-8 encoding explicitly to avoid Windows cp1252 issues
         result = subprocess.run(
             ["ollama", "run", model, prompt],
             capture_output=True,
             text=True,
+            encoding="utf-8",
+            errors="replace",  # Replace invalid UTF-8 bytes instead of failing
             timeout=30,
             check=True
         )
@@ -177,6 +180,8 @@ def check_ollama_available() -> bool:
         subprocess.run(
             ["ollama", "list"],
             capture_output=True,
+            encoding="utf-8",
+            errors="replace",
             timeout=5,
             check=True
         )

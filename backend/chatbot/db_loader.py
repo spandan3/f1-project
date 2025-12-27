@@ -30,12 +30,12 @@ def load_parquet_to_sqlite(force_rebuild: bool = False) -> Path:
         Path to SQLite database
     """
     if DB_PATH.exists() and not force_rebuild:
-        print(f"✅ Database already exists at {DB_PATH}")
+        print(f"[OK] Database already exists at {DB_PATH}")
         return DB_PATH
     
     if DB_PATH.exists():
         DB_PATH.unlink()
-        print(f"🗑️  Removed existing database")
+        print(f"[DELETED] Removed existing database")
     
     DB_PATH.parent.mkdir(parents=True, exist_ok=True)
     
@@ -44,7 +44,7 @@ def load_parquet_to_sqlite(force_rebuild: bool = False) -> Path:
     # === RESULTS TABLE ===
     results_path = RAW_DIR / "results.parquet"
     if results_path.exists():
-        print("📊 Loading results...")
+        print("[LOADING] Loading results...")
         df_res = pd.read_parquet(results_path)
         
         # Normalize column names
@@ -89,19 +89,19 @@ def load_parquet_to_sqlite(force_rebuild: bool = False) -> Path:
         
         df_res = df_res[[c for c in keep_cols if c in df_res.columns]].copy()
         df_res.to_sql("results", conn, if_exists="replace", index=False)
-        print(f"   ✓ {len(df_res):,} rows")
+        print(f"   [OK] {len(df_res):,} rows")
         
         # Create indexes
         conn.execute("CREATE INDEX idx_results_year_name ON results(event_year, event_name)")
         conn.execute("CREATE INDEX idx_results_driver ON results(Driver)")
         conn.execute("CREATE INDEX idx_results_session ON results(session_type)")
     else:
-        print("⚠️  results.parquet not found")
+        print("[WARNING] results.parquet not found")
     
     # === LAPS TABLE ===
     laps_path = RAW_DIR / "laps.parquet"
     if laps_path.exists():
-        print("📊 Loading laps...")
+        print("[LOADING] Loading laps...")
         df_laps = pd.read_parquet(laps_path)
         
         # Normalize columns
@@ -136,18 +136,18 @@ def load_parquet_to_sqlite(force_rebuild: bool = False) -> Path:
             df_laps["LapTime"] = df_laps["LapTime"].astype(str)
         
         df_laps.to_sql("laps", conn, if_exists="replace", index=False)
-        print(f"   ✓ {len(df_laps):,} rows")
+        print(f"   [OK] {len(df_laps):,} rows")
         
         conn.execute("CREATE INDEX idx_laps_year_name ON laps(event_year, event_name)")
         conn.execute("CREATE INDEX idx_laps_driver ON laps(Driver)")
         conn.execute("CREATE INDEX idx_laps_session ON laps(session_type)")
     else:
-        print("⚠️  laps.parquet not found")
+        print("[WARNING] laps.parquet not found")
     
     # === WEATHER TABLE ===
     weather_path = RAW_DIR / "weather.parquet"
     if weather_path.exists():
-        print("📊 Loading weather...")
+        print("[LOADING] Loading weather...")
         df_wx = pd.read_parquet(weather_path)
         
         # Ensure required columns
@@ -159,16 +159,16 @@ def load_parquet_to_sqlite(force_rebuild: bool = False) -> Path:
                     df_wx[col] = df_wx[alt[col]]
         
         df_wx.to_sql("weather", conn, if_exists="replace", index=False)
-        print(f"   ✓ {len(df_wx):,} rows")
+        print(f"   [OK] {len(df_wx):,} rows")
         
         conn.execute("CREATE INDEX idx_weather_year_name ON weather(event_year, event_name)")
     else:
-        print("⚠️  weather.parquet not found")
+        print("[WARNING] weather.parquet not found")
     
     conn.commit()
     conn.close()
     
-    print(f"\n✅ Database created at {DB_PATH}")
+    print(f"\n[OK] Database created at {DB_PATH}")
     return DB_PATH
 
 
