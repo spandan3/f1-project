@@ -255,22 +255,36 @@ def build_weather_features(raw_wx_path: Path) -> Optional[pd.DataFrame]:
 # FEATURE DEFINITIONS
 # ============================================================================
 
-# Standard feature columns used across training and inference
-FEATURE_COLS = [
+# PRE-RACE FEATURES: Available BEFORE the race starts (valid for prediction)
+PRE_RACE_FEATURES = [
+    # Qualifying performance
     "grid_pos", "quali_gap_s", "grid_quali_diff",
+    # Historical form (uses SHIFTED data from past races)
     "driver_last3_avg_finish", "team_last3_avg_finish",
-    "pos_change", "race_total_overtakes",
-    "driver_overtakes", "driver_times_overtaken", "driver_net_passes",
-    "pit_loss_total_s",
+    # Weather (known at race start)
     "mean_air_temp", "mean_track_temp", "mean_wind_speed", "mean_wind_dir", "wind_sin", "wind_cos",
-    "is_wet_flag", "start_compound", "start_soft", "start_medium", "start_hard", "start_inter", "start_wet"
+    "is_wet_flag",
+    # Starting tyre (known at race start)
+    "start_compound", "start_soft", "start_medium", "start_hard", "start_inter", "start_wet"
 ]
+
+# POST-RACE FEATURES: Computed FROM race results (leaky - for analysis only!)
+POST_RACE_FEATURES = [
+    "pos_change",              # grid_pos - finish_pos (requires finish!)
+    "race_total_overtakes",    # Derived from pos_change
+    "driver_overtakes",        # From race lap data
+    "driver_times_overtaken",  # From race lap data
+    "driver_net_passes",       # From race lap data
+    "pit_loss_total_s",        # From actual pit stops
+]
+
+# All features (for backward compatibility in feature building)
+FEATURE_COLS = PRE_RACE_FEATURES + POST_RACE_FEATURES
 
 # Columns to zero-fill for missing values
 ZERO_FILL_COLS = [
-    "quali_gap_s", "pit_loss_total_s",
+    "quali_gap_s",
     "mean_air_temp", "mean_track_temp", "mean_wind_speed", "mean_wind_dir", "wind_sin", "wind_cos",
-    "pos_change", "driver_overtakes", "driver_times_overtaken", "driver_net_passes"
 ]
 
 # Metadata columns (not features)

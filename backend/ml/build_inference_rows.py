@@ -17,7 +17,7 @@ from .common import (
     CACHE_DIR,
     FE_DIR,
     to_seconds,
-    FEATURE_COLS,
+    PRE_RACE_FEATURES,
 )
 
 # Inference output directory
@@ -294,14 +294,12 @@ def build_inference_from_cache(
     df["start_compound"] = pd.Series(["Unknown"] * len(df), dtype="category")
     for comp in ["soft", "medium", "hard", "inter", "wet"]:
         df[f"start_{comp}"] = 0
-    for c in ["pos_change", "race_total_overtakes", "driver_overtakes", 
-              "driver_times_overtaken", "driver_net_passes", "pit_loss_total_s"]:
-        df[c] = 0.0
 
     # === Final columns (align with model) ===
     df["race_id"] = df["event_year"].astype(str) + "_" + df["event_name"].astype(str)
     
-    feature_cols = FEATURE_COLS + ["best_fp2_s", "best_fp3_s", "mean_best_lap_practice_s"]
+    # Use only PRE_RACE_FEATURES (no leaky post-race features)
+    feature_cols = PRE_RACE_FEATURES + ["best_fp2_s", "best_fp3_s", "mean_best_lap_practice_s"]
     keep = ["race_id", "event_year", "event_name", "Driver", "DriverNumber", "TeamName"] + \
            [c for c in feature_cols if c in df.columns]
     out = df[keep].copy()

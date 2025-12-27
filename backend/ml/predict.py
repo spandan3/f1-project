@@ -48,7 +48,13 @@ def spearman_rho_from_ranks(pred_rank: np.ndarray, true_rank: np.ndarray) -> flo
 
 def evaluate_group(g: pd.DataFrame) -> dict:
     """Evaluate prediction metrics for a single race."""
-    rel = -pd.to_numeric(g["finish_pos"], errors="coerce").values
+    # Convert finish_pos to relevance: lower position = higher relevance
+    # Same formula as trainer.py: max_pos - finish_pos + 1
+    finish_pos = pd.to_numeric(g["finish_pos"], errors="coerce").values
+    max_pos = max(finish_pos[~pd.isna(finish_pos)]) if len(finish_pos[~pd.isna(finish_pos)]) > 0 else 20
+    rel = (max_pos - finish_pos + 1)
+    rel = np.nan_to_num(rel, nan=0.0)  # Handle NaN
+    
     scores = g["score"].values
 
     true_rank = g["finish_pos"].rank(method="min").values
