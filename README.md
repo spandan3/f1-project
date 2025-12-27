@@ -14,11 +14,34 @@ A machine learning system that predicts Formula 1 race finishing order. Built fo
 | Optuna Hyperparameter Tuning | ✅ Ready |
 | Rolling Update System | ✅ Ready |
 | REST API | ✅ Ready |
-| Basic Frontend | ✅ Ready |
+| Production Frontend | ✅ Ready (React + TypeScript) |
 | Chat Assistant (RAG) | 🚧 Planned |
-| Live Dashboard | 🚧 Planned |
 | Telemetry Visualizations | 🚧 Planned |
 
+---
+
+## 🛠️ Tech Stack
+
+**Backend**
+- Python 3.10+
+- FastAPI - REST API framework
+- LightGBM - Gradient boosting for ranking
+- Optuna - Hyperparameter optimization
+- FastF1 - F1 data API wrapper
+- Pandas/NumPy - Data processing
+
+**Frontend**
+- React 18 + TypeScript
+- Vite - Build tool
+- Tailwind CSS - Styling
+- TanStack React Query - Data fetching
+- React Router - Routing
+- Recharts - Visualizations
+
+**Data & ML**
+- Parquet - Efficient data storage
+- Scikit-learn - ML utilities
+- Joblib - Model serialization
 
 ---
 
@@ -43,7 +66,9 @@ A machine learning system that predicts Formula 1 race finishing order. Built fo
 
 ## 🚀 SETUP
 
-### 1. Install Dependencies
+### Backend Setup
+
+#### 1. Install Python Dependencies
 
 ```bash
 # Create virtual environment
@@ -57,7 +82,7 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-### 2. Build Features (if not already done)
+#### 2. Build Features (if not already done)
 
 ```bash
 python -m backend.ml.build_features
@@ -65,7 +90,7 @@ python -m backend.ml.build_features
 
 Creates `data/fe/features.parquet` with all engineered features.
 
-### 3. Train Model
+#### 3. Train Model
 
 ```bash
 # Quick training (~1-2 min)
@@ -75,16 +100,61 @@ python -m backend.ml.trainer
 python -m backend.ml.trainer --tune --n-trials 50
 ```
 
-### 4. Verify It Works
+#### 4. Start the API
 
 ```bash
-# Test predictions
+python run_api.py
+```
+
+API will be available at `http://localhost:8000`
+
+### Frontend Setup
+
+#### 1. Install Node Dependencies
+
+```bash
+cd frontend
+npm install
+```
+
+#### 2. Configure API URL (Optional)
+
+Create `frontend/.env`:
+
+```env
+VITE_API_URL=http://localhost:8000
+```
+
+#### 3. Start Development Server
+
+```bash
+npm run dev
+```
+
+Frontend will be available at `http://localhost:5173`
+
+#### 4. Build for Production
+
+```bash
+npm run build
+npm run preview
+```
+
+### Verify Everything Works
+
+**Backend:**
+```bash
+# Test predictions via CLI
 python -m backend.ml.predict --year 2024
 
-# Or start the API
-python run_api.py
-# Open http://127.0.0.1:8000/docs
+# Or use API docs
+# Open http://localhost:8000/docs
 ```
+
+**Frontend:**
+- Navigate to `http://localhost:5173`
+- Check Dashboard for system status
+- Use Predict page to generate predictions
 
 ---
 

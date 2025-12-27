@@ -68,6 +68,12 @@ models/*.joblib
 .env.local
 .env.*.local
 
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+frontend/.env.local
+
 # OS
 .DS_Store
 Thumbs.db

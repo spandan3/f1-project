@@ -185,12 +185,34 @@ def fetch_single_race(year: int, event_name: str) -> dict:
     }
 
 
-def get_available_races(year: int) -> list[str]:
-    """Get list of race names for a year."""
+def get_available_races(year: int) -> list[dict]:
+    """Get list of races for a year with round, name, and date."""
     try:
         cal = fastf1.get_event_schedule(year)
-        return cal["EventName"].tolist()
-    except Exception:
+        races = []
+        for _, row in cal.iterrows():
+            event_name = row["EventName"]
+            # Filter out testing and non-race events
+            if "Testing" in event_name or "Test" in event_name:
+                continue
+            
+            round_num = row.get("RoundNumber")
+            # Handle NaN or missing round numbers
+            if pd.isna(round_num):
+                round_num = len(races) + 1
+            else:
+                round_num = int(round_num)
+            
+            # Only include if it's a valid round (>= 1) or if RoundNumber is missing but it's a GP
+            if round_num >= 1 or "Grand Prix" in event_name:
+                races.append({
+                    "round": round_num if round_num >= 1 else len(races) + 1,
+                    "race_name": event_name,
+                    "date": str(row.get("EventDate", "")) if pd.notna(row.get("EventDate")) else "",
+                })
+        return races
+    except Exception as e:
+        print(f"⚠️ Error getting races for {year}: {e}", file=sys.stderr)
         return []
 
 
