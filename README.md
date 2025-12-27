@@ -15,7 +15,7 @@ A machine learning system that predicts Formula 1 race finishing order. Built fo
 | Rolling Update System | ✅ Ready |
 | REST API | ✅ Ready |
 | Production Frontend | ✅ Ready (React + TypeScript) |
-| Chat Assistant (RAG) | 🚧 Planned |
+| Chat Assistant (Local LLM) | ✅ Ready (Ollama + SQLite) |
 | Telemetry Visualizations | 🚧 Planned |
 
 ---
@@ -365,11 +365,12 @@ The model uses **only pre-race data** — no data leakage!
 - [ ] Track-specific features (street circuit, high downforce, etc.)
 - [ ] Cross-validation for more robust evaluation
 
-### Phase 2: Chat Assistant
-- [ ] Set up vector database (FAISS or Qdrant)
-- [ ] Build RAG pipeline for natural language queries
-- [ ] "Who had the fastest lap at Monaco 2023?"
-- [ ] "Compare Verstappen vs Leclerc last 5 races"
+### Phase 2: Chat Assistant ✅
+- [x] ~~Set up SQLite database for querying~~ ✅ Done
+- [x] ~~Build NL→SQL pipeline with local LLM (Ollama)~~ ✅ Done
+- [x] ~~Rule-based handlers for common queries~~ ✅ Done
+- [x] ~~Natural language queries against dataset~~ ✅ Done
+- See `backend/chatbot/README.md` for details
 
 ### Phase 3: Live Dashboard
 - [ ] Real-time standings during race

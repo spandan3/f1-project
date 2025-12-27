@@ -189,3 +189,22 @@ def status():
             pass
     
     return info
+
+
+@app.post("/chat")
+def chat(
+    question: str = Query(..., description="Natural language question about F1 data"),
+    use_llm: bool = Query(True, description="Whether to use LLM fallback if rule-based fails")
+):
+    """
+    Chatbot endpoint: Answer questions about F1 data.
+    
+    Uses rule-based handlers for common queries, falls back to LLM (Ollama) for arbitrary questions.
+    All queries are executed as read-only SQL against the local database.
+    """
+    try:
+        from .chatbot import ask_question
+        response = ask_question(question, use_llm=use_llm)
+        return response
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
