@@ -40,8 +40,6 @@ env/
 f1_cache/
 data/raw/*.parquet
 data/processed/*.parquet
-data/fe/*.parquet
-data/fe/**/*.parquet
 data/preds/*.csv
 
 # FastF1 cache database
@@ -53,9 +51,16 @@ data/preds/*.csv
 !data/fe/.gitkeep
 !data/preds/.gitkeep
 
-# Models (large binary files)
+# Feature files - exclude all, then allow specific ones
+data/fe/*.parquet
+data/fe/**/*.parquet
+!data/fe/features.parquet
+
+# Models - exclude all, then allow specific ones
 models/*.txt
 models/*.joblib
+!models/ranker_lgb.txt
+!models/ranker_meta.joblib
 !models/.gitkeep
 
 # Environment
