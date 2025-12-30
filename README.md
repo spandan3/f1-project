@@ -4,22 +4,6 @@ A machine learning system that predicts Formula 1 race finishing order. Built fo
 
 ---
 
-## 📊 Current Status
-
-| Component | Status |
-|-----------|--------|
-| Data Pipeline | ✅ Ready (2018-2025) |
-| Feature Engineering | ✅ Ready (173 races) |
-| LightGBM Ranking Model | ✅ Ready |
-| Optuna Hyperparameter Tuning | ✅ Ready |
-| Rolling Update System | ✅ Ready |
-| REST API | ✅ Ready |
-| Production Frontend | ✅ Ready (React + TypeScript) |
-| Chat Assistant (Local LLM) | ✅ Ready (Ollama + SQLite) |
-| Telemetry Visualizations | 🚧 Planned |
-
----
-
 ## 🛠️ Tech Stack
 
 **Backend**
@@ -356,75 +340,9 @@ The model uses **only pre-race data** — no data leakage!
 
 ---
 
-## 🚧 TODO / FUTURE PLANS
-
-### Phase 1: Core Improvements
-- [x] ~~Hyperparameter tuning with Optuna~~ ✅ Done
-- [ ] Add sprint race handling
-- [ ] Add driver/team championship standings as features
-- [ ] Track-specific features (street circuit, high downforce, etc.)
-- [ ] Cross-validation for more robust evaluation
-
-### Phase 2: Chat Assistant ✅
-- [x] ~~Set up SQLite database for querying~~ ✅ Done
-- [x] ~~Build NL→SQL pipeline with local LLM (Ollama)~~ ✅ Done
-- [x] ~~Rule-based handlers for common queries~~ ✅ Done
-- [x] ~~Natural language queries against dataset~~ ✅ Done
-- See `backend/chatbot/README.md` for details
-
-### Phase 3: Live Dashboard
-- [ ] Real-time standings during race
-- [ ] Prediction vs actual comparison
-- [ ] Driver telemetry plots
-- [ ] Tyre strategy visualization
-
-### Phase 4: Advanced Models
-- [ ] Experiment with neural ranking models
-- [ ] Ensemble methods
-- [ ] Lap-by-lap position prediction
-
----
-
-## 🔧 TROUBLESHOOTING
-
-### "Features file not found"
-```bash
-python -m backend.ml.build_features
-```
-
-### "Model not found"
-```bash
-python -m backend.ml.trainer
-```
-
-### "No data after filtering"
-Check available races:
-```bash
-python -m backend.ml.update --list 2024
-```
-
-### FastF1 errors for old years (2015-2017)
-**Don't use pre-2018 data.** FastF1 doesn't support it:
-```
-Cannot load laps, telemetry, weather, and message data because the relevant API is not supported for this session.
-```
-
-Use 2018-2025 instead:
-```bash
-python -m backend.ml.fetch_data --years 2018-2025
-```
-
-### Network timeout during fetch
-The fetch can take a while. If it fails:
-```bash
-# Retry - FastF1 cache will skip already-downloaded sessions
-python -m backend.ml.fetch_data --years 2018-2025
-```
-
----
-
 ## 🙏 CREDITS
 
 - [FastF1](https://github.com/theOehrly/Fast-F1) - F1 telemetry data
 - [LightGBM](https://lightgbm.readthedocs.io/) - Gradient boosting framework
 - [FastAPI](https://fastapi.tiangolo.com/) - API framework
+
