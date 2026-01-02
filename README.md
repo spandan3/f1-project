@@ -1,5 +1,9 @@
 # 🏎️ F1 Race Prediction System
 
+**Experience the app live here:** [**predict-f1.vercel.app**](https://predict-f1.vercel.app/)
+
+---
+
 A comprehensive machine learning system that predicts Formula 1 race finishing order with an interactive web interface and AI-powered database assistant. Built for **rolling predictions** throughout the 2026 season.
 
 **Features:**
@@ -192,4 +196,5 @@ See `backend/chatbot/README.md` for detailed documentation.
 - [FastAPI](https://fastapi.tiangolo.com/) - API framework
 - [Groq](https://groq.com/) - AI inference platform (free tier)
 - [Ollama](https://ollama.ai/) - Local LLM runtime
+
 
