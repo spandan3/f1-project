@@ -18,14 +18,15 @@ A comprehensive machine learning system that predicts Formula 1 race finishing o
 ## 📸 Demo
 
 ### Landing Page
-*Insert landing page screenshot here*
+![Landing Page](./frontend/public/f1pic1.png)
 
 The main entry point where users select a season and race to generate predictions.
 
 ---
 
 ### Race Dashboard
-*Insert dashboard screenshot here*
+![Race Dashboard](./frontend/public/f1pic2.png)
+![Races Analysis](./frontend/public/f1pic4.png)
 
 **Features:**
 - Predicted finishing order with confidence scores
@@ -38,7 +39,7 @@ The main entry point where users select a season and race to generate prediction
 ---
 
 ### Prediction Table
-*Insert prediction table screenshot here*
+![Prediction Table](./frontend/public/f2pic3.png)
 
 Detailed table showing:
 - Predicted position
@@ -51,14 +52,14 @@ Detailed table showing:
 ---
 
 ### Upcoming Races
-*Insert upcoming races page screenshot here*
+![Upcoming Races](./frontend/public/f1pic5.png)
 
 Dedicated page for future race predictions with automatic detection of next available race.
 
 ---
 
 ### AI Database Assistant
-*Insert chatbot interface screenshot here*
+![AI Database Assistant](./frontend/public/f1pic6.png)
 
 **Natural Language Query Interface:**
 - Ask questions in plain English
@@ -76,7 +77,6 @@ Dedicated page for future race predictions with automatic detection of next avai
 ---
 
 ### Performance Metrics
-*Insert metrics display screenshot here*
 
 Real-time model performance metrics including NDCG scores, hit rates, and correlation coefficients.
 
