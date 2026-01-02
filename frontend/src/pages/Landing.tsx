@@ -21,6 +21,21 @@ export function Landing() {
     enabled: selectedYear > 0,
   });
 
+  // Get latest year and round for "View Latest Analysis" button
+  const latestYear = status?.available_years?.length 
+    ? Math.max(...status.available_years) 
+    : 2025;
+  
+  const { data: latestYearRaces } = useQuery({
+    queryKey: ['races', latestYear],
+    queryFn: () => apiClient.getRaces(latestYear),
+    enabled: latestYear > 0,
+  });
+
+  const latestRound = latestYearRaces?.length 
+    ? Math.max(...latestYearRaces.map((r: Race) => r.round))
+    : 1;
+
   const selectedRace = races?.find((r: Race) => r.round === selectedRound);
 
   const handleGeneratePrediction = () => {
@@ -159,7 +174,7 @@ export function Landing() {
               Upcoming Races
             </button>
             <button
-              onClick={() => navigate('/dashboard?year=2024&round=24')}
+              onClick={() => navigate(`/dashboard?year=${latestYear}&round=${latestRound}`)}
               className="btn-outline text-lg"
             >
               View Latest Analysis
