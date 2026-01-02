@@ -81,3 +81,5 @@ Thumbs.db
 
 # Logs
 *.log
+
+process_latest_race.py

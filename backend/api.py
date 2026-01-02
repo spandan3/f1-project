@@ -16,6 +16,7 @@ from fastapi.responses import JSONResponse
 from .ml.predict import predict, DEFAULT_FE, MODEL, META
 from .ml.update import update_after_race
 from .ml.fetch_data import get_available_races
+from .ml.build_inference_rows import build_inference_from_cache
 
 app = FastAPI(
     title="F1 Predictions API",
@@ -66,6 +67,7 @@ def api_predict(
     """
     try:
         # If round is provided, look up the race name
+        race_name = None
         if round is not None and year is not None:
             races = get_available_races(year)
             race_match = next((r for r in races if r.get("round") == round), None)
@@ -74,10 +76,43 @@ def api_predict(
                     status_code=404, 
                     detail=f"Race round {round} not found for year {year}"
                 )
-            race_id = f"{year}_{race_match['race_name']}"
+            race_name = race_match['race_name']
+            race_id = f"{year}_{race_name}"
+        elif race_id:
+            # Extract race name from race_id
+            parts = race_id.split('_', 1)
+            if len(parts) == 2:
+                year = int(parts[0])
+                race_name = parts[1]
+        
+        # Check if race exists in features.parquet (completed race)
+        # If not, and it's 2026+, try to build inference features from qualifying
+        use_inference = False
+        if year and year >= 2026 and race_name and DEFAULT_FE.exists():
+            try:
+                df_check = pd.read_parquet(DEFAULT_FE)
+                race_id_check = f"{year}_{race_name}"
+                if race_id_check not in df_check['race_id'].values:
+                    # Race not in completed data, try to build inference features
+                    try:
+                        print(f"📥 Building inference features for {year} {race_name}...")
+                        inference_path = build_inference_from_cache(
+                            event_year=year,
+                            event_name=race_name,
+                            n_hist_races=6,
+                            use_practice=False
+                        )
+                        fe_path = str(inference_path)
+                        use_inference = True
+                    except Exception as e:
+                        # If inference build fails, try with regular features anyway
+                        print(f"⚠️ Could not build inference features: {e}")
+                        pass
+            except Exception:
+                pass
         
         race_ids = [race_id] if race_id else None
-        df, metrics = predict(race_ids=race_ids, year=year, fe_path=fe_path, save_csv=False)
+        df, metrics = predict(race_ids=race_ids, year=year, fe_path=fe_path if use_inference else None, save_csv=False)
         
         # Extract race info from first row if available
         race_info = {}
