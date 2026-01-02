@@ -15,7 +15,7 @@ export function Layout() {
     { path: '/', label: 'Home', icon: '🏠' },
     { path: '/dashboard', label: 'Dashboard', icon: '📊' },
     { path: '/upcoming', label: 'Upcoming', icon: '🏁' },
-    { path: '/chat', label: 'Chat', icon: '💬', badge: 'Soon' },
+    { path: '/chat', label: 'Chat', icon: '💬' },
   ];
 
   const isActive = (path: string) => {
@@ -57,12 +57,6 @@ export function Layout() {
                 >
                   <span className="hidden sm:inline">{item.icon}</span>
                   <span>{item.label}</span>
-                  {item.badge && (
-                    <span className="absolute -top-1 -right-1 bg-yellow-500 text-black text-[10px] 
-                                   px-1.5 py-0.5 rounded-full font-bold">
-                      {item.badge}
-                    </span>
-                  )}
                 </Link>
               ))}
             </div>

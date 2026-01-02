@@ -62,4 +62,18 @@ export interface ChatMessage {
   role: 'user' | 'assistant';
   content: string;
   timestamp: Date;
+  rows?: Record<string, any>[];
+  sql?: string;
+  explanation?: string;
+  method?: string;
+}
+
+export interface ChatResponse {
+  answer: string;
+  rows: Record<string, any>[];
+  explanation: string;
+  sql: string;
+  row_count: number;
+  error: string | null;
+  method: 'llm' | 'none';
 }

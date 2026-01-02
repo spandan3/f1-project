@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { apiClient } from '../lib/api';
+import { LoadingSpinner } from '../components/LoadingSpinner';
 import type { ChatMessage } from '../types';
 
 export function Chat() {
@@ -6,14 +8,15 @@ export function Chat() {
     {
       id: '1',
       role: 'assistant',
-      content: 'Hello! I\'m the F1 Predictor Assistant. This feature is coming soon! In the future, you\'ll be able to ask me questions like:\n\n• "Who had the fastest lap in Monaco 2023?"\n• "Compare Verstappen and Hamilton\'s form this season"\n• "What\'s the predicted podium for the next race?"',
+      content: 'Hello! I\'m your F1 Database Assistant. I can answer questions about our Formula 1 database covering 2018-2025 seasons.\n\nAsk me anything about:\n• Race results and positions\n• Championship standings\n• Lap times and fastest laps\n• Driver and team statistics\n• Qualifying and pole positions\n\nTry questions like:\n• "Who won the 2023 championship?"\n• "Who finished 2nd in Monaco 2024?"\n• "Who had the fastest lap in Bahrain 2023?"\n• "How many podiums did Verstappen get in 2024?"',
       timestamp: new Date(),
     },
   ]);
   const [input, setInput] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSend = () => {
-    if (!input.trim()) return;
+  const handleSend = async () => {
+    if (!input.trim() || isLoading) return;
 
     const userMessage: ChatMessage = {
       id: Date.now().toString(),
@@ -22,15 +25,36 @@ export function Chat() {
       timestamp: new Date(),
     };
 
-    const botResponse: ChatMessage = {
-      id: (Date.now() + 1).toString(),
-      role: 'assistant',
-      content: 'Thanks for your message! The chat assistant is currently under development. Check back soon for full RAG-powered Q&A capabilities.',
-      timestamp: new Date(),
-    };
-
-    setMessages(prev => [...prev, userMessage, botResponse]);
+    setMessages(prev => [...prev, userMessage]);
     setInput('');
+    setIsLoading(true);
+
+    try {
+      const response = await apiClient.askChatbot(input);
+      
+      const botResponse: ChatMessage = {
+        id: (Date.now() + 1).toString(),
+        role: 'assistant',
+        content: response.answer,
+        timestamp: new Date(),
+        rows: response.rows,
+        sql: response.sql,
+        explanation: response.explanation,
+        method: response.method,
+      };
+
+      setMessages(prev => [...prev, botResponse]);
+    } catch (error) {
+      const errorMessage: ChatMessage = {
+        id: (Date.now() + 1).toString(),
+        role: 'assistant',
+        content: `Sorry, I encountered an error: ${error instanceof Error ? error.message : 'Unknown error'}. Please try rephrasing your question.`,
+        timestamp: new Date(),
+      };
+      setMessages(prev => [...prev, errorMessage]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -46,14 +70,14 @@ export function Chat() {
       <div className="mb-8">
         <div className="flex items-center gap-3 mb-2">
           <h1 className="font-racing text-3xl text-white">
-            Chat Assistant
+            F1 Database Assistant
           </h1>
-          <span className="bg-yellow-500 text-black px-2 py-1 rounded text-xs font-bold">
-            Coming Soon
+          <span className="bg-green-500 text-black px-2 py-1 rounded text-xs font-bold">
+            Live
           </span>
         </div>
         <p className="text-gray-400">
-          Ask questions about F1 data, predictions, and driver performance
+          Ask questions about our F1 database (2018-2025). Get instant answers about race results, championship standings, lap times, and more.
         </p>
       </div>
 
@@ -78,9 +102,60 @@ export function Chat() {
                   <div className="flex items-center gap-2 mb-2">
                     <span className="text-f1-red">🏎️</span>
                     <span className="text-xs text-gray-400 font-medium">F1 Predictor</span>
+                    {message.method === 'llm' && (
+                      <span className="text-xs px-2 py-0.5 rounded bg-blue-500/20 text-blue-400">
+                        AI
+                      </span>
+                    )}
                   </div>
                 )}
                 <p className="whitespace-pre-wrap text-sm">{message.content}</p>
+                
+                {/* Display data table if rows exist */}
+                {message.rows && message.rows.length > 0 && (
+                  <div className="mt-3 overflow-x-auto">
+                    <table className="w-full text-xs border-collapse">
+                      <thead>
+                        <tr className="border-b border-gray-600">
+                          {Object.keys(message.rows[0]).map((key) => (
+                            <th key={key} className="text-left p-2 text-gray-400 font-semibold">
+                              {key}
+                            </th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {message.rows.slice(0, 10).map((row, idx) => (
+                          <tr key={idx} className="border-b border-gray-700/50 hover:bg-gray-800/50">
+                            {Object.values(row).map((val, colIdx) => (
+                              <td key={colIdx} className="p-2 text-gray-300">
+                                {val !== null && val !== undefined ? String(val) : 'N/A'}
+                              </td>
+                            ))}
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                    {message.rows.length > 10 && (
+                      <p className="text-xs text-gray-500 mt-2">
+                        Showing 10 of {message.rows.length} results
+                      </p>
+                    )}
+                  </div>
+                )}
+                
+                {/* Show SQL query in expandable section */}
+                {message.sql && (
+                  <details className="mt-3">
+                    <summary className="text-xs text-gray-500 cursor-pointer hover:text-gray-400">
+                      View SQL Query
+                    </summary>
+                    <pre className="mt-2 p-2 bg-gray-900 rounded text-xs text-gray-400 overflow-x-auto">
+                      {message.sql}
+                    </pre>
+                  </details>
+                )}
+                
                 <div className={`text-xs mt-2 ${
                   message.role === 'user' ? 'text-white/60' : 'text-gray-500'
                 }`}>
@@ -89,6 +164,16 @@ export function Chat() {
               </div>
             </div>
           ))}
+          {isLoading && (
+            <div className="flex justify-start">
+              <div className="bg-f1-dark/50 text-gray-300 rounded-bl-md border border-gray-700/50 p-3 max-w-[60%]">
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 border-2 border-gray-600 border-t-f1-red rounded-full animate-spin" />
+                  <span className="text-xs text-gray-400">Thinking...</span>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Input Area */}
@@ -99,19 +184,19 @@ export function Chat() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder="Ask about F1 predictions, drivers, or races..."
+              placeholder="Ask questions about our F1 database (e.g., 'Who won the 2023 championship?')"
               className="input flex-1"
             />
             <button
               onClick={handleSend}
-              disabled={!input.trim()}
+              disabled={!input.trim() || isLoading}
               className="btn-primary px-6 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Send
+              {isLoading ? 'Sending...' : 'Send'}
             </button>
           </div>
           <p className="text-xs text-gray-500 mt-2">
-            Press Enter to send • Shift+Enter for new line
+            Press Enter to send
           </p>
         </div>
       </div>
@@ -119,31 +204,32 @@ export function Chat() {
       {/* Feature Preview */}
       <div className="mt-8 grid md:grid-cols-3 gap-4">
         <FeaturePreview
-          icon="🔍"
-          title="Data Queries"
-          description="Ask about lap times, positions, and historical stats"
+          icon="🏁"
+          title="Race Results"
+          description="Query race winners, positions, and finishing orders"
         />
         <FeaturePreview
-          icon="📊"
-          title="Predictions"
-          description="Get predictions for upcoming races and compare drivers"
+          icon="🏆"
+          title="Championship Data"
+          description="Ask about championship standings, points, and rankings"
         />
         <FeaturePreview
-          icon="📈"
-          title="Analysis"
-          description="Deep dive into performance trends and strategy insights"
+          icon="⏱️"
+          title="Lap Times & Stats"
+          description="Get fastest laps, sector times, and performance metrics"
         />
       </div>
 
-      {/* Coming Soon Banner */}
-      <div className="mt-8 card-glass text-center py-8 racing-stripes">
-        <h3 className="text-xl font-semibold text-white mb-2">
-          RAG-Powered Assistant Coming Soon
+      {/* Info Banner */}
+      <div className="mt-8 card-glass text-center py-6">
+        <h3 className="text-lg font-semibold text-white mb-2">
+          💡 Database Coverage
         </h3>
-        <p className="text-gray-400 max-w-md mx-auto">
-          We're building a retrieval-augmented generation system that will let you 
-          query our entire F1 database using natural language.
-        </p>
+        <div className="text-gray-400 max-w-2xl mx-auto text-sm space-y-1">
+          <p>• <strong>Years:</strong> 2018-2025 seasons (173 races, 3,978 driver-race records)</p>
+          <p>• <strong>Data:</strong> Race results, qualifying, lap times, weather conditions</p>
+          <p>• <strong>Tip:</strong> Include the year in your question for best results (e.g., "in 2023")</p>
+        </div>
       </div>
     </div>
   );
@@ -155,12 +241,11 @@ function FeaturePreview({ icon, title, description }: {
   description: string; 
 }) {
   return (
-    <div className="card-hover opacity-60">
-      <div className="text-2xl mb-2">{icon}</div>
-      <h4 className="font-semibold text-white mb-1">{title}</h4>
-      <p className="text-sm text-gray-400">{description}</p>
-      <div className="text-xs text-yellow-500 mt-2">Coming Soon</div>
-    </div>
+      <div className="card-hover">
+        <div className="text-2xl mb-2">{icon}</div>
+        <h4 className="font-semibold text-white mb-1">{title}</h4>
+        <p className="text-sm text-gray-400">{description}</p>
+      </div>
   );
 }
 

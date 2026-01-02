@@ -1,4 +1,4 @@
-import type { StatusResponse, Race, PredictionResponse, UpdateResponse } from '../types';
+import type { StatusResponse, Race, PredictionResponse, UpdateResponse, ChatResponse } from '../types';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
@@ -49,6 +49,13 @@ class ApiClient {
   async refreshData(years: string = '2018-2025'): Promise<{ status: string; message: string }> {
     return this.request<{ status: string; message: string }>(
       `/refresh-data?years=${years}`,
+      { method: 'POST' }
+    );
+  }
+
+  async askChatbot(question: string, useLlm: boolean = true): Promise<ChatResponse> {
+    return this.request<ChatResponse>(
+      `/chat?question=${encodeURIComponent(question)}&use_llm=${useLlm}`,
       { method: 'POST' }
     );
   }

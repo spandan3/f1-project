@@ -19,6 +19,10 @@ optuna>=3.4.0  # Hyperparameter tuning
 # F1 Data
 fastf1>=3.2.0
 
+# Chatbot LLM Support
+groq>=0.4.0  # For Groq Cloud API (optional - set GROQ_API_KEY env var)
+python-dotenv>=1.0.0  # For loading .env files
+
 # Optional: For notebook experimentation
 # jupyter>=1.0.0
 # matplotlib>=3.7.0

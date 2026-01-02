@@ -40,6 +40,38 @@ INTENT_PATTERNS = {
         r"driver.*points",
         r"which\s+driver.*most\s+points",
     ],
+    "most_wins": [
+        r"won\s+most\s+races",
+        r"most\s+wins",
+        r"who\s+won\s+the\s+most",
+        r"most\s+victories",
+    ],
+    "best_driver": [
+        r"best\s+driver",
+        r"who\s+is\s+the\s+best\s+driver",
+        r"who\s+was\s+the\s+best\s+driver",
+        r"champion",
+        r"top\s+driver",
+    ],
+    "most_poles": [
+        r"most\s+pole\s+positions",
+        r"most\s+poles",
+        r"who\s+had\s+the\s+most\s+pole",
+    ],
+    "worst_driver": [
+        r"worst\s+driver",
+        r"worst\s+performer",
+        r"least\s+points",
+        r"fewest\s+points",
+    ],
+    "championship": [
+        r"championship",
+        r"champion",
+        r"won\s+the\s+.*championship",
+        r"championship\s+winner",
+        r"world\s+champion",
+        r"driver.*champion",
+    ],
 }
 
 
@@ -228,6 +260,161 @@ def handle_team_points(question: str) -> Optional[str]:
     return sql.strip()
 
 
+def handle_most_wins(question: str) -> Optional[str]:
+    """
+    Generate SQL for "who won most races" queries.
+    
+    Example: "Who won most races in 2023?"
+    """
+    year_match = re.search(r'\b(20\d{2})\b', question)
+    year = int(year_match.group(1)) if year_match else None
+    
+    if not year:
+        return None
+    
+    sql = f"""
+    SELECT 
+        Driver,
+        TeamName,
+        COUNT(*) as Wins
+    FROM results
+    WHERE event_year = {year}
+        AND session_type = 'R'
+        AND Position = 1
+    GROUP BY Driver, TeamName
+    ORDER BY Wins DESC
+    LIMIT 1
+    """
+    
+    return sql.strip()
+
+
+def handle_best_driver(question: str) -> Optional[str]:
+    """
+    Generate SQL for "best driver" queries (most points).
+    
+    Example: "Who was the best driver in 2023?"
+    """
+    year_match = re.search(r'\b(20\d{2})\b', question)
+    year = int(year_match.group(1)) if year_match else None
+    
+    if not year:
+        return None
+    
+    sql = f"""
+    SELECT 
+        Driver,
+        TeamName,
+        SUM(CAST(Points AS REAL)) as TotalPoints
+    FROM results
+    WHERE event_year = {year}
+        AND session_type = 'R'
+        AND Points IS NOT NULL
+    GROUP BY Driver, TeamName
+    ORDER BY TotalPoints DESC
+    LIMIT 1
+    """
+    
+    return sql.strip()
+
+
+def handle_most_poles(question: str) -> Optional[str]:
+    """
+    Generate SQL for "most pole positions" queries.
+    
+    Example: "Who had the most pole positions in 2023?"
+    """
+    year_match = re.search(r'\b(20\d{2})\b', question)
+    year = int(year_match.group(1)) if year_match else None
+    
+    if not year:
+        return None
+    
+    sql = f"""
+    SELECT 
+        Driver,
+        TeamName,
+        COUNT(*) as Poles
+    FROM results
+    WHERE event_year = {year}
+        AND session_type = 'Q'
+        AND Position = 1
+    GROUP BY Driver, TeamName
+    ORDER BY Poles DESC
+    LIMIT 1
+    """
+    
+    return sql.strip()
+
+
+def handle_worst_driver(question: str) -> Optional[str]:
+    """
+    Generate SQL for "worst driver" queries - converts to objective metrics.
+    
+    Examples:
+    - "Who was the worst driver in 2023?" → Driver with fewest points
+    - "Who had the least points in 2023?" → Driver with fewest points
+    """
+    year_match = re.search(r'\b(20\d{2})\b', question)
+    year = int(year_match.group(1)) if year_match else None
+    
+    if not year:
+        return None
+    
+    # Convert "worst" to "fewest points" (objective metric)
+    sql = f"""
+    SELECT 
+        Driver,
+        TeamName,
+        SUM(CAST(Points AS REAL)) as TotalPoints
+    FROM results
+    WHERE event_year = {year}
+        AND session_type = 'R'
+        AND Points IS NOT NULL
+    GROUP BY Driver, TeamName
+    HAVING TotalPoints IS NOT NULL
+    ORDER BY TotalPoints ASC
+    LIMIT 1
+    """
+    
+    return sql.strip()
+
+
+def handle_championship(question: str) -> Optional[str]:
+    """
+    Generate SQL for championship queries - driver with most points in a year.
+    
+    Examples:
+    - "Who won the 2025 championship?" → Driver with most points in 2025
+    - "Who was the 2023 champion?" → Driver with most points in 2023
+    - "2024 championship winner" → Driver with most points in 2024
+    """
+    year_match = re.search(r'\b(20\d{2})\b', question)
+    year = int(year_match.group(1)) if year_match else None
+    
+    if not year:
+        return None
+    
+    # Championship = Driver with most points across all races in the year
+    sql = f"""
+    SELECT 
+        Driver,
+        TeamName,
+        SUM(CAST(Points AS REAL)) as TotalPoints,
+        COUNT(*) as Races
+    FROM results
+    WHERE event_year = {year}
+        AND session_type = 'R'
+        AND Points IS NOT NULL
+    GROUP BY Driver, TeamName
+    HAVING TotalPoints IS NOT NULL
+    ORDER BY TotalPoints DESC
+    LIMIT 1
+    """
+    
+    return sql.strip()
+
+
 def detect_intent(question: str) -> Optional[str]:
     """
     Detect query intent from question.
@@ -268,6 +455,16 @@ def get_rule_based_sql(question: str) -> Optional[str]:
         return handle_pole_position(question)
     elif intent == "team_points":
         return handle_team_points(question)
+    elif intent == "most_wins":
+        return handle_most_wins(question)
+    elif intent == "best_driver":
+        return handle_best_driver(question)
+    elif intent == "most_poles":
+        return handle_most_poles(question)
+    elif intent == "worst_driver":
+        return handle_worst_driver(question)
+    elif intent == "championship":
+        return handle_championship(question)
     
     return None
 

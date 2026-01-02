@@ -184,23 +184,47 @@ def get_db_schema() -> str:
     
     conn = sqlite3.connect(str(DB_PATH))
     
-    schema_parts = ["# F1 Database Schema\n"]
+    schema_parts = ["# Formula 1 Database Schema\n\n"]
+    schema_parts.append("This database contains historical Formula 1 data from 2018-2025.\n")
+    
+    table_descriptions = {
+        "results": "USE FOR: Winners, race positions, points, grid starts, qualifying times (Q1/Q2/Q3). This is the PRIMARY table for 90% of questions.",
+        "laps": "USE FOR: Lap times, sector times, tyre compounds, tyre life. ONLY use this if the question specifically asks about lap-by-lap data or 'fastest lap time'.",
+        "weather": "USE FOR: Temperature, humidity, wind, and rain conditions."
+    }
+    
+    # Define column descriptions for better LLM understanding
+    col_descriptions = {
+        "event_year": "The 4-digit year of the race (e.g. 2023).",
+        "event_name": "Full name of the Grand Prix (e.g. 'Monaco Grand Prix').",
+        "session_type": "'R' for Race, 'Q' for Qualifying, 'S' for Sprint.",
+        "Driver": "Driver's name or abbreviation (e.g. 'Verstappen' or 'VER').",
+        "Position": "Final finishing position in the session (1 = winner).",
+        "Points": "Points scored in that specific session.",
+        "GridPosition": "Starting position on the grid.",
+        "LapTime": "Duration of the lap as a string (use MIN() for fastest).",
+    }
     
     # Get table names
     tables = conn.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall()
     
     for (table_name,) in tables:
         schema_parts.append(f"\n## Table: {table_name}\n")
+        desc = table_descriptions.get(table_name, "")
+        if desc:
+            schema_parts.append(f"Description: {desc}\n")
+        
         schema_parts.append("Columns:\n")
         
         # Get column info
         cols = conn.execute(f"PRAGMA table_info({table_name})").fetchall()
         for _, col_name, col_type, not_null, default, pk in cols:
+            desc = col_descriptions.get(col_name, "")
             schema_parts.append(f"  - {col_name} ({col_type})")
+            if desc:
+                schema_parts[-1] += f" -- {desc}"
             if pk:
                 schema_parts[-1] += " [PRIMARY KEY]"
-            if not_null:
-                schema_parts[-1] += " [NOT NULL]"
             schema_parts[-1] += "\n"
         
         # Get sample data
