@@ -15,7 +15,7 @@ from fastapi.responses import JSONResponse
 
 from .ml.predict import predict, DEFAULT_FE, MODEL, META
 from .ml.update import update_after_race
-from .ml.fetch_data import get_available_races
+from .ml.fetch_data import get_available_races, fetch_single_race
 from .ml.build_inference_rows import build_inference_from_cache
 
 app = FastAPI(
@@ -138,8 +138,8 @@ def api_predict(
                 "constructor": row["TeamName"],
                 "grid_pos": int(row.get("grid_pos", 0)) if pd.notna(row.get("grid_pos")) else 0,
                 "pred_score": float(row["score"]),
-                "actual_pos": int(row["finish_pos"]) if pd.notna(row["finish_pos"]) else None,
-                "finish_pos": int(row["finish_pos"]) if pd.notna(row["finish_pos"]) else None,
+                "actual_pos": int(row["finish_pos"]) if "finish_pos" in df.columns and pd.notna(row.get("finish_pos", None)) else None,
+                "finish_pos": int(row["finish_pos"]) if "finish_pos" in df.columns and pd.notna(row.get("finish_pos", None)) else None,
             })
         
         # Format metrics
@@ -164,7 +164,16 @@ def api_predict(
         raise HTTPException(status_code=404, detail=str(e))
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
+    except KeyError as e:
+        # Handle missing columns gracefully (e.g., finish_pos for pre-race predictions)
+        raise HTTPException(
+            status_code=500, 
+            detail=f"Missing required column: {str(e)}. This may indicate incomplete data."
+        )
     except Exception as e:
+        import traceback
+        error_detail = f"{str(e)}\n\nTraceback:\n{traceback.format_exc()}"
+        print(f"❌ Error in /predict: {error_detail}")
         raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -224,6 +233,79 @@ def status():
             pass
     
     return info
+
+
+@app.post("/prepare-race")
+def prepare_race(
+    year: int = Query(..., description="Race year (e.g., 2026)"),
+    race: str = Query(..., description="GP name (e.g., 'Australian Grand Prix')"),
+    build_features: bool = Query(True, description="Whether to build inference features after fetching"),
+):
+    """
+    Prepare a race for prediction by fetching qualifying data and building features.
+    
+    This endpoint:
+    1. Fetches qualifying (Q) and race (R) session data from FastF1
+    2. Optionally builds inference features for pre-race prediction
+    
+    Use this before calling /predict for upcoming races.
+    """
+    try:
+        # Step 1: Fetch data (only qualifying needed for pre-race predictions)
+        print(f"📥 Fetching qualifying data for {year} {race}...")
+        # For pre-race predictions, we only need qualifying (Q), not race (R)
+        # This only fetches the specific race's qualifying data, not other races
+        fetch_result = fetch_single_race(year, race, require_race=False)
+        
+        if not fetch_result.get("ok"):
+            error_msg = fetch_result.get('error', 'Unknown error')
+            # Provide more helpful error message
+            if "not been loaded" in error_msg or "Session.load" in error_msg:
+                error_msg = (
+                    f"Qualifying data for {race} not available yet. "
+                    f"This usually means: (1) Qualifying hasn't completed yet, "
+                    f"(2) FastF1 hasn't received the data from F1 servers (wait 5-10 min), or "
+                    f"(3) There's a network issue. "
+                    f"Try again in a few minutes after qualifying completes."
+                )
+            raise HTTPException(
+                status_code=500,
+                detail=f"Failed to fetch qualifying data: {error_msg}"
+            )
+        
+        result = {
+            "ok": True,
+            "year": year,
+            "race": race,
+            "data_fetched": True,
+            "laps_added": fetch_result.get("laps_added", 0),
+            "results_added": fetch_result.get("results_added", 0),
+            "weather_added": fetch_result.get("weather_added", 0),
+        }
+        
+        # Step 2: Build inference features if requested
+        if build_features:
+            try:
+                print(f"🔧 Building inference features for {year} {race}...")
+                inference_path = build_inference_from_cache(
+                    event_year=year,
+                    event_name=race,
+                    n_hist_races=6,
+                    use_practice=False
+                )
+                result["features_built"] = True
+                result["features_path"] = str(inference_path)
+            except Exception as e:
+                result["features_built"] = False
+                result["features_error"] = str(e)
+                # Don't fail completely - data is fetched, features can be built later
+        
+        return result
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @app.post("/chat")

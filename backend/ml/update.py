@@ -33,9 +33,9 @@ def update_after_race(year: int, event_name: str, retrain: bool = True) -> dict:
     print(f"🏎️ UPDATING: {year} {event_name}")
     print("=" * 60)
     
-    # Step 1: Fetch race data
+    # Step 1: Fetch race data (need both Q and R sessions after race completes)
     print("\n📥 Step 1: Fetching race data...")
-    fetch_result = fetch_single_race(year, event_name)
+    fetch_result = fetch_single_race(year, event_name, require_race=True)
     
     if not fetch_result.get("ok"):
         print(f"❌ Failed to fetch race: {fetch_result.get('error')}")

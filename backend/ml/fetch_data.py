@@ -99,7 +99,7 @@ def fetch_years(start_year: int, end_year: int, events: list[str] | None = None)
     return stats
 
 
-def fetch_single_race(year: int, event_name: str) -> dict:
+def fetch_single_race(year: int, event_name: str, require_race: bool = False) -> dict:
     """
     Fetch a single race and APPEND to existing data files.
     Used for rolling updates after each 2026 race.
@@ -107,6 +107,7 @@ def fetch_single_race(year: int, event_name: str) -> dict:
     Args:
         year: Race year
         event_name: Exact GP name (e.g., "Bahrain Grand Prix")
+        require_race: If True, race session (R) is required. If False, only qualifying (Q) is needed.
         
     Returns:
         Dict with status
@@ -114,11 +115,22 @@ def fetch_single_race(year: int, event_name: str) -> dict:
     print(f"\n🏎️ Fetching {year} {event_name}...")
     
     new_laps, new_res, new_wx = [], [], []
+    sessions_to_fetch = ["Q", "R"] if require_race else ["Q"]
+    errors = []
     
-    for kind in ["Q", "R"]:
+    for kind in sessions_to_fetch:
         try:
             s = fastf1.get_session(year, event_name, kind)
+            # Check if session exists before loading
+            if not s:
+                raise ValueError(f"Session {kind} does not exist for {year} {event_name}")
+            
+            # Load session data
             s.load()
+            
+            # Verify data was loaded
+            if s.results is None or len(s.results) == 0:
+                raise ValueError(f"Session {kind} loaded but contains no results data")
             
             # Laps
             laps = s.laps.copy()
@@ -144,8 +156,27 @@ def fetch_single_race(year: int, event_name: str) -> dict:
             print(f"   ✓ {kind} session loaded")
             
         except Exception as e:
-            print(f"   ✗ {kind}: {e}", file=sys.stderr)
-            return {"ok": False, "error": str(e)}
+            error_msg = str(e)
+            print(f"   ✗ {kind}: {error_msg}", file=sys.stderr)
+            errors.append(f"{kind}: {error_msg}")
+            
+            # If qualifying fails, we can't proceed (required for predictions)
+            if kind == "Q":
+                return {
+                    "ok": False, 
+                    "error": f"Qualifying session not available: {error_msg}. Make sure qualifying has completed and data is available on FastF1."
+                }
+            # If race fails but we don't require it, continue (for pre-race predictions)
+            elif kind == "R" and not require_race:
+                print(f"   ⚠️  Race session not available yet (expected for pre-race predictions)")
+                continue
+    
+    # Check if we got at least qualifying data
+    if not new_res:
+        return {
+            "ok": False,
+            "error": f"No session data retrieved. Errors: {'; '.join(errors)}"
+        }
 
     # Append to existing files
     laps_path = RAW_DIR / "laps.parquet"

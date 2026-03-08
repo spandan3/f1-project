@@ -147,9 +147,12 @@ def predict(
     df = df.sort_values(["race_id", "score"], ascending=[True, False])
     df["pred_rank"] = df.groupby("race_id")["score"].rank(ascending=False, method="first")
 
-    # Output columns
+    # Output columns (finish_pos may not exist for pre-race predictions)
     cols = ["race_id", "event_year", "event_name", "Driver", "TeamName", 
-            "grid_pos", "finish_pos", "pred_rank", "score"]
+            "grid_pos", "pred_rank", "score"]
+    # Only add finish_pos if it exists (for completed races)
+    if "finish_pos" in df.columns:
+        cols.append("finish_pos")
     cols = [c for c in cols if c in df.columns]
     
     result_df = df[cols].copy()

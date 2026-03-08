@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { apiClient } from '../lib/api';
@@ -13,11 +13,28 @@ export function Upcoming() {
   const [selectedYear] = useState(2026);
   const [selectedRound, setSelectedRound] = useState(1);
   const [predictionRequested, setPredictionRequested] = useState(false);
+  const [preparing, setPreparing] = useState(false);
+  const [prepareError, setPrepareError] = useState<string | null>(null);
 
   const { data: races, isLoading: racesLoading } = useQuery({
     queryKey: ['races', selectedYear],
     queryFn: () => apiClient.getRaces(selectedYear),
   });
+
+  // Auto-select next upcoming race on mount
+  useEffect(() => {
+    if (races && races.length > 0) {
+      const today = new Date();
+      const upcoming = races
+        .filter((r: Race) => new Date(r.date) >= today)
+        .sort((a: Race, b: Race) => new Date(a.date).getTime() - new Date(b.date).getTime());
+      
+      if (upcoming.length > 0 && selectedRound === 1) {
+        // Auto-select the next upcoming race
+        setSelectedRound(upcoming[0].round);
+      }
+    }
+  }, [races, selectedRound]);
 
   const {
     data: predictions,
@@ -31,8 +48,25 @@ export function Upcoming() {
 
   const selectedRace = races?.find((r: Race) => r.round === selectedRound);
 
-  const handleGeneratePrediction = () => {
-    setPredictionRequested(true);
+  const handleGeneratePrediction = async () => {
+    // For 2026 races, prepare (fetch data + build features) first
+    if (selectedYear >= 2026 && selectedRace) {
+      setPreparing(true);
+      setPrepareError(null);
+      try {
+        await apiClient.prepareRace(selectedYear, selectedRace.race_name, true);
+        // After preparation succeeds, request prediction
+        setPredictionRequested(true);
+      } catch (error) {
+        setPrepareError((error as Error).message || 'Failed to prepare race data');
+        console.error('Failed to prepare race:', error);
+      } finally {
+        setPreparing(false);
+      }
+    } else {
+      // For historical races, just request prediction
+      setPredictionRequested(true);
+    }
   };
 
   // Find next upcoming race
@@ -170,27 +204,42 @@ export function Upcoming() {
                   </p>
                 </div>
                 
-                {!predictionRequested && (
+                {!predictionRequested && !preparing && (
                   <button
                     onClick={handleGeneratePrediction}
                     className="btn-primary"
+                    disabled={preparing}
                   >
-                    Generate Prediction
+                    {selectedYear >= 2026 ? 'Prepare & Generate Prediction' : 'Generate Prediction'}
                   </button>
+                )}
+                {preparing && (
+                  <div className="flex items-center gap-2 text-f1-red">
+                    <LoadingSpinner message="Preparing race data..." />
+                  </div>
                 )}
               </div>
             </div>
           )}
 
+          {/* Preparation Error */}
+          {prepareError && (
+            <ErrorMessage 
+              message={`Failed to prepare race: ${prepareError}. Make sure qualifying data is available.`} 
+            />
+          )}
+
           {/* Loading */}
-          {predictionsLoading && (
+          {(predictionsLoading || preparing) && (
             <div className="py-16">
-              <LoadingSpinner message="Generating prediction..." />
+              <LoadingSpinner 
+                message={preparing ? "Fetching qualifying data and building features..." : "Generating prediction..."} 
+              />
             </div>
           )}
 
           {/* Error */}
-          {predictionsError && (
+          {predictionsError && !preparing && (
             <ErrorMessage message={(predictionsError as Error).message} />
           )}
 

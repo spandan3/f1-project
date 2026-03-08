@@ -59,6 +59,35 @@ class ApiClient {
       { method: 'POST' }
     );
   }
+
+  async prepareRace(year: number, race: string, buildFeatures: boolean = true): Promise<{
+    ok: boolean;
+    year: number;
+    race: string;
+    data_fetched: boolean;
+    laps_added?: number;
+    results_added?: number;
+    weather_added?: number;
+    features_built?: boolean;
+    features_path?: string;
+    features_error?: string;
+  }> {
+    return this.request<{
+      ok: boolean;
+      year: number;
+      race: string;
+      data_fetched: boolean;
+      laps_added?: number;
+      results_added?: number;
+      weather_added?: number;
+      features_built?: boolean;
+      features_path?: string;
+      features_error?: string;
+    }>(
+      `/prepare-race?year=${year}&race=${encodeURIComponent(race)}&build_features=${buildFeatures}`,
+      { method: 'POST' }
+    );
+  }
 }
 
 export const apiClient = new ApiClient(API_BASE_URL);
